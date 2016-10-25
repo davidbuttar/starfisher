@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<title>Phaser Template</title>
+	<script type="text/javascript" src="./js/wordBubbles.js"></script>
+	<script type="text/javascript" src="./js/generateWords.js"></script>
+    <script type="text/javascript" src="./js/phaser.js"></script>
+	<script type="text/javascript" src="./js/boot.js"></script>
+	<script type="text/javascript" src="./js/preload.js"></script>
+	<script type="text/javascript" src="./js/gametitle.js"></script>
+	<script type="text/javascript" src="./js/main.js"></script>
+    <script type="text/javascript" src="./js/gameover.js"></script>
+
+	<style type="text/css">
+        body {
+            margin: 0;
+			background-color: black;
+        }
+		canvas{
+			margin:0 auto;
+		}
+    </style>
+
+    <script type="text/javascript">
+
+		/**
+		 * Scales a number correctly to map the screen pixel ratio.
+		 * @param value
+         */
+		function scaleToPixelRatio(value){
+			return value*window.devicePixelRatio;
+		}
+
+		(function() {
+
+			game = new Phaser.Game(scaleToPixelRatio(1600), scaleToPixelRatio(1080), Phaser.AUTO, 'game');
+
+
+			fontLoaded = false;
+
+			WebFontConfig = {
+
+				//  'active' means all requested fonts have finished loading
+				//  We set a 1 second delay before calling 'createText'.
+				//  For some reason if we don't the browser cannot render the text the first time it's created.
+				active: function() {
+					fontLoaded = true;
+				},
+
+				//  The Google Fonts we want to load (specify as many as you like in the array)
+				google: {
+					families: ['Nunito']
+				}
+
+			};
+
+			//Add all states
+			game.state.add("Boot", Boot);
+			game.state.add("Preload", Preload);
+			game.state.add("GameTitle", GameTitle);
+			game.state.add("Main", Main);
+			game.state.add("GameOver", GameOver);
+
+			//Start the first state
+			game.state.start("Boot");
+
+		})();
+    </script>
+</head>
+<body>
+</body>
+</html>
