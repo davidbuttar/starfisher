@@ -3,85 +3,66 @@ var Main = function (game) {
     var cursors;
     var bullets;
     var rocket;
+    var bullet;
     var bulletTime = 0;
     var wordBubblesInstance = wordBubbles();
+    var starfield, starField2;
 
     function fireBullet() {
         if (game.time.now > bulletTime) {
             bullet = bullets.getFirstExists(false);
-
+            var rocketRadius = rocket.height / 2 + scaleToPixelRatio(15);
             if (bullet) {
-                var radius = 90;
-                var newX = shipManagerInstance.active().x + radius * Math.cos(shipManagerInstance.active().rotation);
-                var newY = shipManagerInstance.active().y + radius * Math.sin(shipManagerInstance.active().rotation);
-                bullet.reset(newX, newY);
-                bullet.lifespan = 2000;
-                bullet.rotation = shipManagerInstance.active().rotation;
-                game.physics.arcade.velocityFromRotation(shipManagerInstance.active().rotation, 800, bullet.body.velocity);
+                bullet.reset(rocket.x + rocketRadius * Math.cos(rocket.rotation - Phaser.Math.degToRad(90)),
+                    rocket.y + rocketRadius * Math.sin(rocket.rotation - Phaser.Math.degToRad(90)));
+                bullet.lifespan = 1000;
+                bullet.body.rotation = rocket.rotation;
+                bullet.body.thrust(scaleToPixelRatio(80000));
                 bulletTime = game.time.now + 50;
             }
         }
-
     }
-
-    function screenWrap(sprite) {
-        if (sprite.x < 0) {
-            sprite.x = game.width;
-        }
-        else if (sprite.x > game.width) {
-            sprite.x = 0;
-        }
-
-        if (sprite.y < 0) {
-            sprite.y = game.height;
-        }
-        else if (sprite.y > game.height) {
-            sprite.y = 0;
-        }
-    }
-
 
     that.create = function () {
 
-        function resizePolygon(originalPhysicsKey, newPhysicsKey, shapeKey, scale) {
-            var newData = [];
-            game.cache._cache.physics[originalPhysicsKey].data[shapeKey].forEach(function (shapes) {
-                var shapeArray = [];
-                shapes.shape.forEach(function (values) {
-                    shapeArray.push(values * scale);
-                });
-                newData.push({shape: shapeArray});
+        utils.resizePolygon('physicsData', 'physicsData2', 'Star', scaleToPixelRatio(0.1));
 
-            });
-            var item = {};
-            item[shapeKey] = newData;
-            game.load.physics(newPhysicsKey, '', item);
-        }
+        starfield = game.add.tileSprite(0, 0, game.width, game.height, 'space');
+        starField2 = game.add.tileSprite(0, 0, game.width, game.height, 'space2');
 
-
-        resizePolygon('physicsData', 'physicsData2', 'Star', scaleToPixelRatio(0.1));
-
-        //  A spacey background
-        //game.add.tileSprite(0, 0, game.width, game.height, 'space');
-
-        game.stage.backgroundColor = '#ffffff';
 
         //  Enable P2
         game.physics.startSystem(Phaser.Physics.P2JS);
 
         //  Turn on impact events for the world, without this we get no collision callbacks
         game.physics.p2.setImpactEvents(true);
+        game.physics.p2.restitution = 0.7;
 
-        game.physics.p2.restitution = 0.8;
+        // Set up our collision groups.
+        var bulletCollisionGroup = game.physics.p2.createCollisionGroup();
+        var wordCollisionGroup = game.physics.p2.createCollisionGroup();
 
         //  Create our ship sprite
-        rocket = game.add.sprite(scaleToPixelRatio(80), scaleToPixelRatio(540), 'rocket');
+        rocket = game.add.sprite(scaleToPixelRatio(800), scaleToPixelRatio(540), 'rocket');
         rocket.scale.set(scaleToPixelRatio(0.1));
         game.physics.p2.enable(rocket);
 
-        //  Check for the block hitting another object
-        rocket.body.onBeginContact.add(blockHit, this);
+        wordBubblesInstance.create([wordCollisionGroup, bulletCollisionGroup]);
 
+        // Add our game bullets
+        bullets = game.add.group();
+        for (var i = 0; i < 10; i++) {
+            var bullet = bullets.create(0, 0, 'bullet');
+            bullet.scale.set(scaleToPixelRatio(0.5));
+            game.physics.p2.enable(bullet,false);
+            //  Tell the panda to use the pandaCollisionGroup
+            bullet.body.setCollisionGroup(bulletCollisionGroup);
+            bullet.body.collides(wordCollisionGroup, hitWord);
+            bullet.kill();
+        }
+
+        //  Check for the block hitting another object
+        //rocket.body.onBeginContact.add(blockHit, this);
 
         //  This will run in Canvas mode, so let's gain a little speed and display
         game.renderer.clearBeforeRender = false;
@@ -89,30 +70,26 @@ var Main = function (game) {
 
         //  Game input
         cursors = game.input.keyboard.createCursorKeys();
-        //game.input.keyboard.addKeyCapture([Phaser.Keyboard.SPACEBAR]);
+        game.input.keyboard.addKeyCapture([Phaser.Keyboard.SPACEBAR]);
 
     };
 
-    function blockHit (body, bodyB, shapeA, shapeB, equation) {
+    function hitWord(body1, body2){
+        body1.sprite.lifespan = 1;
+        body2.hits++;
+        if(body2.hits === 6) {
+            body2.sprite.lifespan = 300;
+            wordBubblesInstance.wordCollected(body2);
+        }
+    }
 
-        //  The block hit something.
-        //
-        //  This callback is sent 5 arguments:
-        //
-        //  The Phaser.Physics.P2.Body it is in contact with. *This might be null* if the Body was created directly in the p2 world.
-        //  The p2.Body this Body is in contact with.
-        //  The Shape from this body that caused the contact.
-        //  The Shape from the contact body.
-        //  The Contact Equation data array.
-        //
-        //  The first argument may be null or not have a sprite property, such as when you hit the world bounds.
+    function blockHit (body, bodyB, shapeA, shapeB, equation) {
         if (body) {
             console.log('You last hit: ' + body.sprite.key);
-            body.sprite.lifespan = 300;
-        }
-        else
-        {
-            console.log('You last hit: The wall :)');
+            if(!body.hit) {
+                body.sprite.lifespan = 300;
+                wordBubblesInstance.wordCollected(body);
+            }
         }
 
     }
@@ -121,6 +98,10 @@ var Main = function (game) {
         //wordBubblesInstance.update();
 
         //bubble.body.setZeroVelocity();
+        starfield.tilePosition.y += 0.1;
+        starfield.tilePosition.x += 0.1;
+        starField2.tilePosition.x -= 0.2;
+        starField2.tilePosition.y -= 0.02;
 
         if (cursors.left.isDown) {rocket.body.rotateLeft(scaleToPixelRatio(60));}   //ship movement
         else if (cursors.right.isDown){rocket.body.rotateRight(scaleToPixelRatio(60));}
@@ -128,8 +109,14 @@ var Main = function (game) {
         if (cursors.up.isDown){rocket.body.thrust(scaleToPixelRatio(2000));}
         else if (cursors.down.isDown){rocket.body.reverse(scaleToPixelRatio(400));}
 
-        //wordBubblesInstance.update();
+        if (game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR))
+        {
+            fireBullet();
+        }
+
         wordBubblesInstance.update();
+
+
     };
 
     that.postUpdate = function () {

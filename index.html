@@ -3,6 +3,7 @@
 <head>
 	<meta charset="UTF-8" />
 	<title>Phaser Template</title>
+	<script type="text/javascript" src="./js/utils.js"></script>
 	<script type="text/javascript" src="./js/wordBubbles.js"></script>
 	<script type="text/javascript" src="./js/generateWords.js"></script>
     <script type="text/javascript" src="./js/phaser.js"></script>
@@ -29,11 +30,10 @@
 		 * @param value
          */
 		function scaleToPixelRatio(value){
-			return value*window.devicePixelRatio;
+			return value*2;
 		}
 
 		(function() {
-
 			game = new Phaser.Game(scaleToPixelRatio(1600), scaleToPixelRatio(1080), Phaser.AUTO, 'game');
 
 
