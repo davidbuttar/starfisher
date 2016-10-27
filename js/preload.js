@@ -11,13 +11,15 @@ Preload.prototype = {
 		game.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
 		game.load.image('bubble', 'assets/Star2.png');
 		game.load.physics('physicsData', 'assets/sprites.json');
+		game.load.image('playbutton', "assets/playbutton.png");
+
 	},
 
 	create: function(){
 		if(fontLoaded) {
 			var that = this;
 			setTimeout(function(){
-				that.game.state.start("Main");
+				that.game.state.start("GameTitle");
 			},100);
 		}else{
 			setTimeout(this.game.state.states.Preload.create, 10);
