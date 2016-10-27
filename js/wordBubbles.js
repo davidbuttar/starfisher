@@ -37,7 +37,7 @@ var wordBubbles = function(){
     that.create = function(collisionGroups){
         var words = generateWordsInstance.get();
         words.forEach(function (word, index) {
-            game.time.events.add(2000 * index, function(){
+            game.time.events.add(200 * index, function(){
                 that.add(word, collisionGroups);
             }, this);
         });
@@ -125,7 +125,7 @@ var wordBubbles = function(){
             }
             bubbles.forEach(function(bubble, index){
                 bubble.bubble.body.hits = 0;
-                game.time.events.add(2000 * index, function() {
+                game.time.events.add(200 * index, function() {
                     bubble.bubble.body.x= startingPositions[wordAdded].x;
                     bubble.bubble.body.y= startingPositions[wordAdded].y;
                     bubble.bubble.body.velocity.x= startingPositions[wordAdded].vx;
