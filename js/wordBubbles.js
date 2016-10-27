@@ -68,7 +68,7 @@ var wordBubbles = function(){
         var bubble = game.add.sprite(posX, posY, 'bubble');
         bubble.scale.set(scaleToPixelRatio(0.3));
 
-        game.physics.p2.enable(bubble, true);
+        game.physics.p2.enable(bubble);
         bubble.body.clearShapes();
         bubble.body.loadPolygon('physicsData2', 'Star');
         bubble.body.setCollisionGroup(collisionGroups[0]);
@@ -76,6 +76,8 @@ var wordBubbles = function(){
 
         bubble.body.velocity.x= startingPositions[wordAdded].vx;
         bubble.body.velocity.y= startingPositions[wordAdded].vy;
+
+        // Using this to record how many hits on our objects from laser blasts.
         bubble.body.hits = 0;
 
 
