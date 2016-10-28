@@ -30,10 +30,8 @@ var asteroids = function(){
      */
     that.create = function(collisionGroups){
         var words = generateWordsInstance.get();
-        words.forEach(function (word, index) {
-            game.time.events.add((200 * index) + 2000, function(){
-                that.add(word, collisionGroups);
-            }, this);
+        words.forEach(function (word) {
+            that.add(word, collisionGroups);
         });
     };
 
@@ -51,7 +49,7 @@ var asteroids = function(){
         var posY = startingPositions[wordAdded].y;
 
         //  Create our ship sprite
-        var bubble = game.add.sprite(posX, posY, 'asteroid');
+        var bubble = game.add.sprite(-200, -200, 'asteroid');
         bubble.scale.set(scaleToPixelRatio(0.3));
 
         game.physics.p2.enable(bubble);
@@ -65,6 +63,8 @@ var asteroids = function(){
 
         // Using this to record how many hits on our objects from laser blasts.
         bubble.body.hits = 0;
+
+        bubble.lifespan = 1;
 
         var text = game.add.text(0, 0, word.term);
         text.anchor.setTo(0.5);
@@ -93,25 +93,32 @@ var asteroids = function(){
         return bubbles[index].bubble;
     };
 
-    function nextWordCycle(){
-        if(inactive === 3){
-            rounds++;
-            if(rounds === 10){
-                reset();
-            }
-            bubbles.forEach(function(bubble, index){
-                bubble.bubble.body.hits = 0;
-                game.time.events.add(200 * index, function() {
-                    bubble.bubble.body.x= startingPositions[wordAdded].x;
-                    bubble.bubble.body.y= startingPositions[wordAdded].y;
-                    bubble.bubble.body.velocity.x= startingPositions[wordAdded].vx;
-                    bubble.bubble.body.velocity.y= startingPositions[wordAdded].vy;
-                    bubble.bubble.revive();
-                    wordAdded++;
-                });
-            });
-        }
-    }
+    /**
+     * Start a fresh cycle of words.
+     */
+    that.newCycle = function(){
+        wordAdded = 0;
+        bubbles.forEach(function(bubble){
+            bubble.bubble.body.hits = 0;
+            bubble.bubble.body.x = startingPositions[wordAdded].x;
+            bubble.bubble.body.y = startingPositions[wordAdded].y;
+            bubble.bubble.body.angularVelocity = 0;
+            bubble.bubble.body.rotation = Phaser.Math.degToRad(0);
+            bubble.bubble.body.velocity.x= startingPositions[wordAdded].vx;
+            bubble.bubble.body.velocity.y= startingPositions[wordAdded].vy;
+            bubble.bubble.revive();
+            wordAdded++;
+        });
+    };
+
+    /**
+     * End of level remove remaining asteroids
+     */
+    that.roundOver = function(){
+        bubbles.forEach(function(bubble){
+            bubble.bubble.lifespan = 100;
+        });
+    };
 
     /**
      * Position text correctly.
@@ -120,8 +127,8 @@ var asteroids = function(){
         bubbles.forEach(function(bubble){
             if(bubble.bubble && bubble.bubble.exists){
                 utils.screenWrap(bubble.bubble.body);
+                utils.accelerateToObject(bubble.bubble, rocket, 300);
                 utils.constrainVelocity(bubble.bubble, 75);
-                utils.accelerateToObject(bubble.bubble, rocket, 500);
             }
         });
     };

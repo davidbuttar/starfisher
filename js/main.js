@@ -7,7 +7,8 @@ var Main = function (game) {
     var bulletTime = 0;
     var wordBubblesInstance = wordBubbles();
     var asteroidsInstance = asteroids();
-    var starField, starField2;
+    var gameStateInstance = gameState();
+    var starField;
 
     function fireBullet() {
         if (game.time.now > bulletTime) {
@@ -51,6 +52,8 @@ var Main = function (game) {
         rocket.body.setCollisionGroup(shipCollisionGroup);
         rocket.body.collides([wordCollisionGroup, asteroidCollisionGroup]);
 
+        gameStateInstance.create();
+
         wordBubblesInstance.create([wordCollisionGroup, asteroidCollisionGroup, bulletCollisionGroup, shipCollisionGroup]);
         asteroidsInstance.create([asteroidCollisionGroup, wordCollisionGroup, bulletCollisionGroup, shipCollisionGroup]);
 
@@ -73,32 +76,48 @@ var Main = function (game) {
         cursors = game.input.keyboard.createCursorKeys();
         game.input.keyboard.addKeyCapture([Phaser.Keyboard.SPACEBAR]);
 
+        nextRound();
+
     };
+
+    /**
+     * Start the lastest round.
+     */
+    function nextRound(){
+        gameStateInstance.nextRound();
+
+        game.time.events.add(3500, function(){
+            asteroidsInstance.newCycle();
+        }, this);
+
+        game.time.events.add(3000, function(){
+            wordBubblesInstance.newCycle();
+        }, this);
+    }
 
     function hitWord(body1, body2){
         body1.sprite.lifespan = 1;
-        console.log(body2.sprite.key);
         if(body2.sprite.key === 'bubble') {
             body2.hits++;
             if (body2.hits === 6) {
                 body2.sprite.lifespan = 300;
-                wordBubblesInstance.wordCollected(body2);
+                //wordBubblesInstance.wordCollected(body2);
+                gameStateInstance.wordCollected();
             }
+        }
+        if(gameStateInstance.roundOver()){
+            asteroidsInstance.roundOver();
+            nextRound();
         }
     }
 
     that.update = function () {
-        // Update the background position
-        /*starField.tilePosition.y += 0.1;
-        starField.tilePosition.x += 0.1;
-        starField2.tilePosition.x -= 0.2;
-        starField2.tilePosition.y -= 0.02;*/
 
         //Respond to user input
         if (cursors.left.isDown) {
-            rocket.body.rotateLeft(scaleToPixelRatio(75));
+            rocket.body.rotateLeft(scaleToPixelRatio(90));
         } else if (cursors.right.isDown) {
-            rocket.body.rotateRight(scaleToPixelRatio(75));
+            rocket.body.rotateRight(scaleToPixelRatio(90));
         } else {
             rocket.body.setZeroRotation();
         }

@@ -19,6 +19,7 @@ Boot.prototype = {
 	loadScripts: function () {
 		game.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
 		game.load.script('utils',  'js/utils.js');
+		game.load.script('gameStare',  'js/gameState.js');
 		game.load.script('wordBubbles',  'js/wordBubbles.js');
 		game.load.script('generateWords',  'js/generateWords.js');
 		game.load.script('asteroids',  'js/asteroids.js');
@@ -76,9 +77,9 @@ Boot.prototype = {
 	},
 
 	addGameMusic: function () {
-		music = game.add.audio('dangerous');
+		/*music = game.add.audio('dangerous');
 		music.loop = true;
-		music.play();
+		music.play();*/
 	},
 	
 	create: function(){
