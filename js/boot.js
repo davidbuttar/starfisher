@@ -30,15 +30,13 @@ Boot.prototype = {
 	},
 
 	loadBgm: function () {
-		// thanks Kevin Macleod at http://incompetech.com/
 		game.load.audio('dangerous', 'assets/bgm/Dangerous.mp3');
 	},
-	// varios freebies found from google image search
 	loadImages: function () {
 		game.load.image('space', 'assets/space-bg.png');
 		game.load.image('space2', 'assets/space-bg-2.png');
 		game.load.image('bullet', 'assets/blast.png');
-		game.load.image('rocket', 'assets/Rocket2.png');
+		game.load.image('ship', 'assets/ship2.png');
 		game.load.image('rocket', 'assets/Rocket3.png');
 		game.load.image('bubble', 'assets/Star2.png');
 		game.load.image('asteroid', 'assets/asteroid.png');
@@ -64,7 +62,7 @@ Boot.prototype = {
 		this.loadScripts();
 		this.loadImages();
 		this.loadFonts();
-		//this.loadBgm();
+		this.loadBgm();
 	},
 
 
@@ -87,9 +85,15 @@ Boot.prototype = {
 		this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 		this.addGameStates();
 		//this.addGameMusic();
-
-		this.game.state.start("Main");
-
+		if(fontLoaded) {
+			var that = this;
+			setTimeout(function(){
+				game.time.advancedTiming = true;
+				that.game.state.start("Main");
+			},100);
+		}else{
+			setTimeout(this.game.state.states.Boot.create, 10);
+		}
 	}
 };
 
