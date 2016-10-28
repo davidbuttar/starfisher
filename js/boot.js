@@ -3,15 +3,16 @@
  * @param value
  */
 function scaleToPixelRatio(value) {
-	return value*2;
+	return value*1;
 }
 
 var
-	game = new Phaser.Game(scaleToPixelRatio(800), scaleToPixelRatio(800), Phaser.AUTO, 'game'),
+	game = new Phaser.Game(scaleToPixelRatio(1600), scaleToPixelRatio(1080), Phaser.AUTO, 'game'),
 	fontLoaded = false;
 
 
 Boot = function(game) {};
+
   
 Boot.prototype = {
 
@@ -24,6 +25,7 @@ Boot.prototype = {
 		game.load.script('Leaderboard',  'js/leaderboard.js');
 		game.load.script('Main',  'js/main.js');
 		game.load.script('GameOver',  'js/gameover.js');
+		game.load.script('asteroids',  'js/asteroids.js');
 		game.load.physics('physicsData', 'assets/sprites.json');
 	},
 
@@ -37,7 +39,9 @@ Boot.prototype = {
 		game.load.image('space2', 'assets/space-bg-2.png');
 		game.load.image('bullet', 'assets/blast.png');
 		game.load.image('rocket', 'assets/Rocket2.png');
+		game.load.image('rocket', 'assets/Rocket3.png');
 		game.load.image('bubble', 'assets/Star2.png');
+		game.load.image('asteroid', 'assets/asteroid.png');
 	},
 
 	loadFonts: function () {
