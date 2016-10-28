@@ -49,10 +49,10 @@ var Main = function (game) {
         rocket.scale.set(scaleToPixelRatio(0.5));
         game.physics.p2.enable(rocket);
         rocket.body.setCollisionGroup(shipCollisionGroup);
-        rocket.body.collides(wordCollisionGroup);
+        rocket.body.collides([wordCollisionGroup, asteroidCollisionGroup]);
 
-        wordBubblesInstance.create([wordCollisionGroup, bulletCollisionGroup, shipCollisionGroup]);
-        asteroidsInstance.create([asteroidCollisionGroup,wordCollisionGroup, bulletCollisionGroup, shipCollisionGroup]);
+        wordBubblesInstance.create([wordCollisionGroup, asteroidCollisionGroup, bulletCollisionGroup, shipCollisionGroup]);
+        asteroidsInstance.create([asteroidCollisionGroup, wordCollisionGroup, bulletCollisionGroup, shipCollisionGroup]);
 
         // Add our game bullets
         bullets = game.add.group();
@@ -61,7 +61,7 @@ var Main = function (game) {
             bullet.scale.set(scaleToPixelRatio(0.5));
             game.physics.p2.enable(bullet,false);
             bullet.body.setCollisionGroup(bulletCollisionGroup);
-            bullet.body.collides(wordCollisionGroup, hitWord);
+            bullet.body.collides([wordCollisionGroup, asteroidCollisionGroup], hitWord);
             bullet.kill();
         }
 
@@ -77,10 +77,13 @@ var Main = function (game) {
 
     function hitWord(body1, body2){
         body1.sprite.lifespan = 1;
-        body2.hits++;
-        if(body2.hits === 6) {
-            body2.sprite.lifespan = 300;
-            wordBubblesInstance.wordCollected(body2);
+        console.log(body2.sprite.key);
+        if(body2.sprite.key === 'bubble') {
+            body2.hits++;
+            if (body2.hits === 6) {
+                body2.sprite.lifespan = 300;
+                wordBubblesInstance.wordCollected(body2);
+            }
         }
     }
 
@@ -111,6 +114,7 @@ var Main = function (game) {
         }
 
         wordBubblesInstance.update();
+        asteroidsInstance.update(rocket);
 
         utils.constrainVelocity(rocket,85);
 
