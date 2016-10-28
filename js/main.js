@@ -46,7 +46,7 @@ var Main = function (game) {
 
         //  Create our ship sprite
         rocket = game.add.sprite(scaleToPixelRatio(800), scaleToPixelRatio(540), 'rocket');
-        rocket.scale.set(scaleToPixelRatio(0.1));
+        rocket.scale.set(scaleToPixelRatio(0.5));
         game.physics.p2.enable(rocket);
         rocket.body.setCollisionGroup(shipCollisionGroup);
         rocket.body.collides(wordCollisionGroup);
