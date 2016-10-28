@@ -46,7 +46,6 @@ Menu.prototype = {
       });
       node.navState = option.key;
       that.menuNodes.push(node);
-      console.log(node);
     });
 
     this.currentSelectedOption = 0; 
@@ -54,7 +53,6 @@ Menu.prototype = {
 	},
 
   setMenuItem: function(menuIndex) {
-    console.log(this.currentSelectedOption);
     this.menuNodes[this.currentSelectedOption].setStyle(style.navitem.default);
     //this.menuNodes[0].setStyle(style.navitem.default);
     //this.menuNodes[1].setStyle(style.navitem.default);
