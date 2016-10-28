@@ -21,12 +21,12 @@ Boot.prototype = {
 		game.load.script('utils',  'js/utils.js');
 		game.load.script('wordBubbles',  'js/wordBubbles.js');
 		game.load.script('generateWords',  'js/generateWords.js');
+		game.load.script('asteroids',  'js/asteroids.js');
+		game.load.physics('physicsData', 'assets/sprites.json');
 		game.load.script('Menu',  'js/menu.js');
 		game.load.script('Leaderboard',  'js/leaderboard.js');
 		game.load.script('Main',  'js/main.js');
 		game.load.script('GameOver',  'js/gameover.js');
-		game.load.script('asteroids',  'js/asteroids.js');
-		game.load.physics('physicsData', 'assets/sprites.json');
 	},
 
 	loadBgm: function () {
@@ -56,10 +56,6 @@ Boot.prototype = {
 			//  The Google Fonts we want to load (specify as many as you like in the array)
 			google: {
 				families: ['Nunito']
-			},
-			custom: {
-				families: ['TheMinion'],
-				urls: ['assets/style/theminion.css']
 			}
 		}
 	},
@@ -68,7 +64,7 @@ Boot.prototype = {
 		this.loadScripts();
 		this.loadImages();
 		this.loadFonts();
-		this.loadBgm();
+		//this.loadBgm();
 	},
 
 
@@ -90,16 +86,10 @@ Boot.prototype = {
 	create: function(){
 		this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 		this.addGameStates();
-		this.addGameMusic();
+		//this.addGameMusic();
 
-		if(fontLoaded) {
-			var that = this;
-			setTimeout(function(){
-				that.game.state.start("Main");
-			},100);
-		}else{
-			setTimeout(this.game.state.states.Main.create, 10);
-		}
+		this.game.state.start("Main");
+
 	}
 };
 
