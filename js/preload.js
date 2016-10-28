@@ -10,6 +10,7 @@ Preload.prototype = {
 		game.load.image('rocket', 'assets/Rocket2.png');
 		game.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
 		game.load.image('bubble', 'assets/Star2.png');
+		game.load.image('asteroid', 'assets/asteroid.png');
 		game.load.physics('physicsData', 'assets/sprites.json');
 	},
 
