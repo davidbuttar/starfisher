@@ -9,3 +9,4 @@ app/bower_components
 .vagrant
 npm-debug.log
 js/phaser.js
+.DS_Store
