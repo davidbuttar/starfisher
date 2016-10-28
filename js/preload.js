@@ -18,6 +18,7 @@ Preload.prototype = {
 		if(fontLoaded) {
 			var that = this;
 			setTimeout(function(){
+				game.time.advancedTiming = true;
 				that.game.state.start("Main");
 			},100);
 		}else{

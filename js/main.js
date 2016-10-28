@@ -28,7 +28,6 @@ var Main = function (game) {
         utils.resizePolygon('physicsData', 'physicsData2', 'Star', scaleToPixelRatio(0.1));
 
         starField = game.add.tileSprite(0, 0, game.width, game.height, 'space');
-        starField2 = game.add.tileSprite(0, 0, game.width, game.height, 'space2');
 
         game.time.desiredFps = 30;
 
@@ -125,6 +124,10 @@ var Main = function (game) {
 
     that.gameOver = function () {
         this.game.state.start('GameOver');
+    };
+
+    that.render = function(){
+        game.debug.text(game.time.fps, 2, 24, "#00ff00");
     };
 
     return that;
