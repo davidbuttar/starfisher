@@ -31,7 +31,7 @@ var asteroids = function(){
     that.create = function(collisionGroups){
         var words = generateWordsInstance.get();
         words.forEach(function (word, index) {
-            game.time.events.add(200 * index, function(){
+            game.time.events.add((200 * index) + 2000, function(){
                 that.add(word, collisionGroups);
             }, this);
         });
@@ -83,6 +83,16 @@ var asteroids = function(){
         bubbles.push(wordBubble);
     };
 
+
+    /**
+     * Get asteroid at given index.
+     * @param index
+     * @returns {*}
+     */
+    that.get = function(index){
+        return bubbles[index].bubble;
+    };
+
     function nextWordCycle(){
         if(inactive === 3){
             rounds++;
@@ -106,11 +116,12 @@ var asteroids = function(){
     /**
      * Position text correctly.
      */
-    that.update = function(){
+    that.update = function(rocket){
         bubbles.forEach(function(bubble){
             if(bubble.bubble && bubble.bubble.exists){
                 utils.screenWrap(bubble.bubble.body);
                 utils.constrainVelocity(bubble.bubble, 75);
+                utils.accelerateToObject(bubble.bubble, rocket, 500);
             }
         });
     };
