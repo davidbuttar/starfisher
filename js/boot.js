@@ -84,7 +84,7 @@ Boot.prototype = {
 	create: function(){
 		this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 		this.addGameStates();
-		//this.addGameMusic();
+		this.addGameMusic();
 		if(fontLoaded) {
 			var that = this;
 			setTimeout(function(){
