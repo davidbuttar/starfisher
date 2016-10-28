@@ -1,32 +1,26 @@
-var wordBubbles = function(){
+var asteroids = function(){
     var that = {};
     var bubbles = [];
-    var active = 0;
-    var generateWordsInstance = generateWords();
-    var inactive = 0;
-    var score = 0;
     var wordAdded = 0;
-    var scoreText;
-    var wordsCollected = 0;
-    var rounds = 0;
+    var generateWordsInstance = generateWords();
 
     var startingPositions = [
         {
-            x:scaleToPixelRatio(70),
+            x:scaleToPixelRatio(200),
             y:scaleToPixelRatio(70),
-            vx:scaleToPixelRatio(200),
-            vy:scaleToPixelRatio(200)
+            vx:scaleToPixelRatio(250),
+            vy:scaleToPixelRatio(250)
         },
         {
-            x:scaleToPixelRatio(1530),
+            x:scaleToPixelRatio(1430),
             y:scaleToPixelRatio(70),
             vx:scaleToPixelRatio(-200),
-            vy:scaleToPixelRatio(200)
+            vy:scaleToPixelRatio(250)
         },
         {
-            x:scaleToPixelRatio(1530),
+            x:scaleToPixelRatio(1430),
             y:scaleToPixelRatio(1000),
-            vx:scaleToPixelRatio(-200),
+            vx:scaleToPixelRatio(-250),
             vy:scaleToPixelRatio(-200)
         }
     ];
@@ -41,14 +35,6 @@ var wordBubbles = function(){
                 that.add(word, collisionGroups);
             }, this);
         });
-
-        scoreText = game.add.text(scaleToPixelRatio(800), scaleToPixelRatio(1060), 'SCORE:'+score);
-        scoreText.anchor.setTo(0.5);
-        scoreText.font = 'Nunito';
-        scoreText.fontSize = scaleToPixelRatio(20);
-        scoreText.align = 'center';
-        scoreText.fill = '#fff';
-        scoreText.strokeThickness = 1;
     };
 
     /**
@@ -65,12 +51,12 @@ var wordBubbles = function(){
         var posY = startingPositions[wordAdded].y;
 
         //  Create our ship sprite
-        var bubble = game.add.sprite(posX, posY, 'bubble');
+        var bubble = game.add.sprite(posX, posY, 'asteroid');
         bubble.scale.set(scaleToPixelRatio(0.3));
 
         game.physics.p2.enable(bubble);
-        bubble.body.clearShapes();
-        bubble.body.loadPolygon('physicsData2', 'Star');
+        //bubble.body.clearShapes();
+        //bubble.body.loadPolygon('physicsData2', 'Star');
         bubble.body.setCollisionGroup(collisionGroups[0]);
         bubble.body.collides(collisionGroups);
 
@@ -97,17 +83,9 @@ var wordBubbles = function(){
         bubbles.push(wordBubble);
     };
 
-    function reset(){
-        score = 0;
-        wordsCollected = 0;
-        rounds = 0;
-    }
-
     function nextWordCycle(){
         if(inactive === 3){
             rounds++;
-            inactive = 0;
-            wordAdded = 0;
             if(rounds === 10){
                 reset();
             }
@@ -124,31 +102,6 @@ var wordBubbles = function(){
             });
         }
     }
-
-    /**
-     * Update our score
-     * @param newScore
-     * @param numberOfWords
-     */
-    function updateScoreText(newScore, numberOfWords){
-        var plural = numberOfWords === 1 ? '' : 'S';
-        scoreText.text = 'SCORE:' +newScore+ ' | SUCCESSFULLY TARGETED '+numberOfWords +' WORD'+ plural;
-    }
-
-    /**
-     * Called when a word has been collected.
-     */
-    that.wordCollected = function(){
-        if(inactive !== 3) {
-            inactive++;
-            score += 100;
-            wordsCollected++;
-            updateScoreText(score, wordsCollected);
-        }
-        if(inactive === 3){
-            game.time.events.add(4000, nextWordCycle, this);
-        }
-    };
 
     /**
      * Position text correctly.

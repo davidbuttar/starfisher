@@ -6,6 +6,7 @@ var Main = function (game) {
     var bullet;
     var bulletTime = 0;
     var wordBubblesInstance = wordBubbles();
+    var asteroidsInstance = asteroids();
     var starField, starField2;
 
     function fireBullet() {
@@ -27,8 +28,8 @@ var Main = function (game) {
         utils.resizePolygon('physicsData', 'physicsData2', 'Star', scaleToPixelRatio(0.1));
 
         starField = game.add.tileSprite(0, 0, game.width, game.height, 'space');
-        starField2 = game.add.tileSprite(0, 0, game.width, game.height, 'space2');
 
+        game.time.desiredFps = 30;
 
         //  Enable P2
         game.physics.startSystem(Phaser.Physics.P2JS);
@@ -41,15 +42,17 @@ var Main = function (game) {
         var bulletCollisionGroup = game.physics.p2.createCollisionGroup();
         var wordCollisionGroup = game.physics.p2.createCollisionGroup();
         var shipCollisionGroup = game.physics.p2.createCollisionGroup();
+        var asteroidCollisionGroup = game.physics.p2.createCollisionGroup();
 
         //  Create our ship sprite
         rocket = game.add.sprite(scaleToPixelRatio(800), scaleToPixelRatio(540), 'rocket');
-        rocket.scale.set(scaleToPixelRatio(0.1));
+        rocket.scale.set(scaleToPixelRatio(0.5));
         game.physics.p2.enable(rocket);
         rocket.body.setCollisionGroup(shipCollisionGroup);
         rocket.body.collides(wordCollisionGroup);
 
         wordBubblesInstance.create([wordCollisionGroup, bulletCollisionGroup, shipCollisionGroup]);
+        asteroidsInstance.create([asteroidCollisionGroup,wordCollisionGroup, bulletCollisionGroup, shipCollisionGroup]);
 
         // Add our game bullets
         bullets = game.add.group();
@@ -83,16 +86,16 @@ var Main = function (game) {
 
     that.update = function () {
         // Update the background position
-        starField.tilePosition.y += 0.1;
+        /*starField.tilePosition.y += 0.1;
         starField.tilePosition.x += 0.1;
         starField2.tilePosition.x -= 0.2;
-        starField2.tilePosition.y -= 0.02;
+        starField2.tilePosition.y -= 0.02;*/
 
         //Respond to user input
         if (cursors.left.isDown) {
-            rocket.body.rotateLeft(scaleToPixelRatio(60));
+            rocket.body.rotateLeft(scaleToPixelRatio(75));
         } else if (cursors.right.isDown) {
-            rocket.body.rotateRight(scaleToPixelRatio(60));
+            rocket.body.rotateRight(scaleToPixelRatio(75));
         } else {
             rocket.body.setZeroRotation();
         }
@@ -109,6 +112,8 @@ var Main = function (game) {
 
         wordBubblesInstance.update();
 
+        utils.constrainVelocity(rocket,85);
+
         utils.screenWrap(rocket.body);
 
     };
@@ -119,6 +124,10 @@ var Main = function (game) {
 
     that.gameOver = function () {
         this.game.state.start('GameOver');
+    };
+
+    that.render = function(){
+        game.debug.text(game.time.fps, 2, 24, "#00ff00");
     };
 
     return that;
