@@ -18,6 +18,8 @@ var Main = function (game) {
                 bullet.reset(rocket.x + rocketRadius * Math.cos(rocket.rotation - Phaser.Math.degToRad(90)),
                     rocket.y + rocketRadius * Math.sin(rocket.rotation - Phaser.Math.degToRad(90)));
                 bullet.lifespan = 1000;
+                bullet.body.velocity.x = rocket.body.velocity.x;
+                bullet.body.velocity.y = rocket.body.velocity.y;
                 bullet.body.rotation = rocket.rotation;
                 bullet.body.thrust(scaleToPixelRatio(80000));
                 bulletTime = game.time.now + 50;
@@ -30,7 +32,10 @@ var Main = function (game) {
 
         starField = game.add.tileSprite(0, 0, game.width, game.height, 'space');
 
-        game.time.desiredFps = 30;
+        // Setting the frame rate should improve performance but due to bug: https://github.com/photonstorm/phaser/issues/2801
+        // it is causing flickering images.
+        // Frame rate also appears to effect p2 physics so removing this double the forces all round.
+        // game.time.desiredFps = 30;
 
         //  Enable P2
         game.physics.startSystem(Phaser.Physics.P2JS);

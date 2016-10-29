@@ -127,7 +127,7 @@ var asteroids = function(){
         bubbles.forEach(function(bubble){
             if(bubble.bubble && bubble.bubble.exists){
                 utils.screenWrap(bubble.bubble.body);
-                utils.accelerateToObject(bubble.bubble, rocket, 300);
+                utils.accelerateToObject(bubble.bubble, rocket, 400);
                 utils.constrainVelocity(bubble.bubble, 75);
             }
         });

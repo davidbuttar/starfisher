@@ -77,9 +77,9 @@ Boot.prototype = {
 	},
 
 	addGameMusic: function () {
-		/*music = game.add.audio('dangerous');
+		music = game.add.audio('dangerous');
 		music.loop = true;
-		music.play();*/
+		music.play();
 	},
 	
 	create: function(){
