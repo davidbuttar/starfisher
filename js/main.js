@@ -21,7 +21,7 @@ var Main = function (game) {
                 bullet.body.velocity.x = rocket.body.velocity.x;
                 bullet.body.velocity.y = rocket.body.velocity.y;
                 bullet.body.rotation = rocket.rotation;
-                bullet.body.thrust(scaleToPixelRatio(80000));
+                bullet.body.thrust(scaleToPixelRatio(70000));
                 bulletTime = game.time.now + 50;
             }
         }
@@ -43,6 +43,7 @@ var Main = function (game) {
         //  Turn on impact events for the world, without this we get no collision callbacks
         game.physics.p2.setImpactEvents(true);
         game.physics.p2.restitution = 0.7;
+        game.physics.p2.useElapsedTime = true;
 
         // Set up our collision groups.
         var bulletCollisionGroup = game.physics.p2.createCollisionGroup();
@@ -54,6 +55,7 @@ var Main = function (game) {
         rocket = game.add.sprite(scaleToPixelRatio(800), scaleToPixelRatio(540), 'rocket');
         rocket.scale.set(scaleToPixelRatio(0.5));
         game.physics.p2.enable(rocket);
+
         rocket.body.setCollisionGroup(shipCollisionGroup);
         rocket.body.collides([wordCollisionGroup, asteroidCollisionGroup]);
 
@@ -91,7 +93,7 @@ var Main = function (game) {
     function nextRound(){
         gameStateInstance.nextRound();
 
-        game.time.events.add(3500, function(){
+        game.time.events.add(5000, function(){
             asteroidsInstance.newCycle();
         }, this);
 
@@ -105,8 +107,7 @@ var Main = function (game) {
         if(body2.sprite.key === 'bubble') {
             body2.hits++;
             if (body2.hits === 6) {
-                body2.sprite.lifespan = 300;
-                //wordBubblesInstance.wordCollected(body2);
+                wordBubblesInstance.removeBubble(body2);
                 gameStateInstance.wordCollected();
             }
         }
@@ -120,17 +121,17 @@ var Main = function (game) {
 
         //Respond to user input
         if (cursors.left.isDown) {
-            rocket.body.rotateLeft(scaleToPixelRatio(90));
+            rocket.body.rotateLeft(scaleToPixelRatio(80));
         } else if (cursors.right.isDown) {
-            rocket.body.rotateRight(scaleToPixelRatio(90));
+            rocket.body.rotateRight(scaleToPixelRatio(80));
         } else {
             rocket.body.setZeroRotation();
         }
 
         if (cursors.up.isDown) {
-            rocket.body.thrust(scaleToPixelRatio(2000));
+            rocket.body.thrust(scaleToPixelRatio(1400));
         } else if (cursors.down.isDown) {
-            rocket.body.reverse(scaleToPixelRatio(400));
+            rocket.body.reverse(scaleToPixelRatio(40));
         }
 
         if (game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)) {
@@ -140,7 +141,7 @@ var Main = function (game) {
         wordBubblesInstance.update();
         asteroidsInstance.update(rocket);
 
-        utils.constrainVelocity(rocket,85);
+        utils.constrainVelocity(rocket,60);
 
         utils.screenWrap(rocket.body);
 

@@ -8,20 +8,20 @@ var asteroids = function(){
         {
             x:scaleToPixelRatio(200),
             y:scaleToPixelRatio(70),
-            vx:scaleToPixelRatio(250),
-            vy:scaleToPixelRatio(250)
+            vx:scaleToPixelRatio(150),
+            vy:scaleToPixelRatio(150)
         },
         {
             x:scaleToPixelRatio(1430),
             y:scaleToPixelRatio(70),
-            vx:scaleToPixelRatio(-200),
-            vy:scaleToPixelRatio(250)
+            vx:scaleToPixelRatio(-100),
+            vy:scaleToPixelRatio(150)
         },
         {
             x:scaleToPixelRatio(1430),
             y:scaleToPixelRatio(1000),
-            vx:scaleToPixelRatio(-250),
-            vy:scaleToPixelRatio(-200)
+            vx:scaleToPixelRatio(-150),
+            vy:scaleToPixelRatio(-100)
         }
     ];
 
@@ -128,7 +128,7 @@ var asteroids = function(){
             if(bubble.bubble && bubble.bubble.exists){
                 utils.screenWrap(bubble.bubble.body);
                 utils.accelerateToObject(bubble.bubble, rocket, 400);
-                utils.constrainVelocity(bubble.bubble, 75);
+                utils.constrainVelocity(bubble.bubble, 55);
             }
         });
     };

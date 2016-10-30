@@ -9,20 +9,20 @@ var wordBubbles = function(){
         {
             x:scaleToPixelRatio(100),
             y:scaleToPixelRatio(100),
-            vx:scaleToPixelRatio(200),
-            vy:scaleToPixelRatio(200)
+            vx:scaleToPixelRatio(100),
+            vy:scaleToPixelRatio(100)
         },
         {
             x:scaleToPixelRatio(1530),
             y:scaleToPixelRatio(70),
-            vx:scaleToPixelRatio(-200),
-            vy:scaleToPixelRatio(200)
+            vx:scaleToPixelRatio(-100),
+            vy:scaleToPixelRatio(100)
         },
         {
             x:scaleToPixelRatio(1530),
             y:scaleToPixelRatio(1000),
-            vx:scaleToPixelRatio(-200),
-            vy:scaleToPixelRatio(-200)
+            vx:scaleToPixelRatio(-100),
+            vy:scaleToPixelRatio(-100)
         }
     ];
 
@@ -49,7 +49,7 @@ var wordBubbles = function(){
 
         //  Create our ship sprite
         var bubble = game.add.sprite(-100, -100, 'bubble');
-        bubble.scale.set(scaleToPixelRatio(0.3));
+        bubble.scale.set(0.3);
 
         game.physics.p2.enable(bubble);
         bubble.body.clearShapes();
@@ -91,9 +91,31 @@ var wordBubbles = function(){
             bubble.bubble.body.rotation = Phaser.Math.degToRad(0);
             bubble.bubble.body.velocity.x= startingPositions[wordAdded].vx;
             bubble.bubble.body.velocity.y= startingPositions[wordAdded].vy;
+            that.animateIn(bubble.bubble);
             bubble.bubble.revive();
             wordAdded++;
         });
+    };
+
+    /**
+     * Set a bubble for removal.
+     * @param bubble
+     */
+    that.removeBubble = function(bubble){
+        bubble.sprite.lifespan = 810;
+        game.add.tween(bubble.sprite).to({ alpha: 0}, 800, Phaser.Easing.Bounce.InOut, true, 0);
+        game.add.tween(bubble.sprite.scale).to({ x: 0.0, y:0.0 }, 800, Phaser.Easing.Back.InOut, true, 0);
+    };
+
+    /**
+     * Use tweens to give bubbles an interesting entrance.
+     * @param bubble
+     */
+    that.animateIn = function(bubble){
+        bubble.scale.x = 0.1;
+        bubble.scale.y = 0.1;
+        bubble.alpha = 1;
+        game.add.tween(bubble.scale).to({ x: 0.3, y:0.3 }, 800, Phaser.Easing.Back.Out, true, 0);
     };
 
     /**
