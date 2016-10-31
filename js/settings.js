@@ -1,15 +1,15 @@
-var Menu = function(game) {};
+var Settings = function() {};
 
 
-Menu.prototype = {
-	
+Settings.prototype = {
+  
   menuConfig: {
     startY: 260,
     startX: 'center'
   },
 
   menuOptions: [
-    { key: 'Main', title: 'Play'},
+    { key: 'Main', title: 'Main menu'},
     { key: 'Leaderboard', title: 'Leaderboard' },
     { key: 'Settings', title: 'Settings' }
   ],
@@ -88,7 +88,6 @@ Menu.prototype = {
 
     }
   }
-
 };
 
-Phaser.Utils.mixinPrototype(Menu.prototype, utils);
+Phaser.Utils.mixinPrototype(Settings.prototype, utils);

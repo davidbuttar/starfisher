@@ -5,7 +5,7 @@ var style;
 
   // the variables declared here will not be scoped anywhere and will only be accessible in this wrapped function
   var defaultColor = "white",
-    highlightColor = "#FEFFD5";
+    highlightColor = "red";
 
   style = {
     navitem: {
@@ -36,5 +36,3 @@ var style;
   }
 
 })();
-
-// the trailing () triggers the function call immediately

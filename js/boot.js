@@ -20,6 +20,12 @@ Boot.prototype = {
     game.load.script('splash',  'js/splash.js');
 		game.load.image('space', 'assets/space-bg.png');
 		game.load.image('space2', 'assets/space-bg-2.png');
+
+		var leaderboard = [{name: 'david', score: 500},{name: 'krish', score: 1000},{name: 'tiago', score: 700}];
+		
+		if(localStorage.getItem( 'leaderboard') === null){
+      localStorage.setItem('leaderboard', JSON.stringify(leaderboard));
+  	}
 	},
 	
 	create: function(){
