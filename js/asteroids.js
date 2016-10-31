@@ -45,16 +45,15 @@ var asteroids = function(){
     that.add = function(word, collisionGroups){
 
         var wordBubble = {};
-        var posX = startingPositions[wordAdded].x;
-        var posY = startingPositions[wordAdded].y;
+        utils.resizePolygon('physicsData', 'physicsData3', 'asteroid', scaleToPixelRatio(0.3));
 
         //  Create our ship sprite
         var bubble = game.add.sprite(-200, -200, 'asteroid');
         bubble.scale.set(scaleToPixelRatio(0.3));
 
         game.physics.p2.enable(bubble);
-        //bubble.body.clearShapes();
-        //bubble.body.loadPolygon('physicsData2', 'Star');
+        bubble.body.clearShapes();
+        bubble.body.loadPolygon('physicsData3', 'asteroid');
         bubble.body.setCollisionGroup(collisionGroups[0]);
         bubble.body.collides(collisionGroups);
 
@@ -69,10 +68,11 @@ var asteroids = function(){
         var text = game.add.text(0, 0, word.term);
         text.anchor.setTo(0.5);
         text.font = 'Nunito';
-        text.fontSize = 70;
+        text.fontSize = 54;
         text.align = 'left';
-        text.fill = '#444';
+        text.fill = '#fff';
         text.strokeThickness = 1;
+        text.setShadow(-4, 4, 'rgba(0,0,0,0.4)', 0);
 
         bubble.addChild(text);
 
@@ -106,9 +106,31 @@ var asteroids = function(){
             bubble.bubble.body.rotation = Phaser.Math.degToRad(0);
             bubble.bubble.body.velocity.x= startingPositions[wordAdded].vx;
             bubble.bubble.body.velocity.y= startingPositions[wordAdded].vy;
+            that.animateIn(bubble.bubble);
             bubble.bubble.revive();
             wordAdded++;
         });
+    };
+
+    /**
+     * Use tweens to give bubbles an interesting entrance.
+     * @param bubble
+     */
+    that.animateIn = function(bubble){
+        bubble.scale.x = 0.1;
+        bubble.scale.y = 0.1;
+        bubble.alpha = 1;
+        game.add.tween(bubble.scale).to({ x: 0.3, y:0.3 }, 800, Phaser.Easing.Back.Out, true, 0);
+    };
+
+    /**
+     * Use tweens to give bubbles an interesting entrance.
+     * @param bubble
+     */
+    that.animateOut = function(bubble){
+        bubble.body.removeNextStep = true;
+        game.add.tween(bubble).to({ alpha: 0 }, 400, Phaser.Easing.Bounce.Out, true, 0);
+        game.add.tween(bubble.scale).to({ x: 0.1, y:0.1 }, 400, Phaser.Easing.Back.Out, true, 0);
     };
 
     /**
@@ -116,19 +138,20 @@ var asteroids = function(){
      */
     that.roundOver = function(){
         bubbles.forEach(function(bubble){
-            bubble.bubble.lifespan = 100;
+            that.animateOut(bubble.bubble);
         });
     };
 
     /**
      * Position text correctly.
      */
-    that.update = function(rocket){
+    that.update = function(rocket, level){
+        console.log(level);
         bubbles.forEach(function(bubble){
             if(bubble.bubble && bubble.bubble.exists){
                 utils.screenWrap(bubble.bubble.body);
-                utils.accelerateToObject(bubble.bubble, rocket, 400);
-                utils.constrainVelocity(bubble.bubble, 55);
+                utils.accelerateToObject(bubble.bubble, rocket, 400*level);
+                utils.constrainVelocity(bubble.bubble, 90);
             }
         });
     };

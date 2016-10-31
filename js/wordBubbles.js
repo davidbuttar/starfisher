@@ -42,10 +42,7 @@ var wordBubbles = function(){
      * @param collisionGroups
      */
     that.add = function(word, collisionGroups){
-
         var wordBubble = {};
-        var posX = startingPositions[wordAdded].x;
-        var posY = startingPositions[wordAdded].y;
 
         //  Create our ship sprite
         var bubble = game.add.sprite(-100, -100, 'bubble');
@@ -59,14 +56,15 @@ var wordBubbles = function(){
 
         // Using this to record how many hits on our objects from laser blasts.
         bubble.body.hits = 0;
-        bubble.lifespan = 1;
+        bubble.kill();
 
-        var text = game.add.text(0, 0, word.term);
+        var text = game.add.text(0, 24, word.term);
         text.anchor.setTo(0.5);
         text.font = 'Nunito';
-        text.fontSize = 70;
+        text.fontSize = 52;
         text.align = 'left';
-        text.fill = '#444';
+        text.fill = '#222';
+        text.rotation = Phaser.Math.degToRad(-45);
         text.strokeThickness = 1;
 
         bubble.addChild(text);
@@ -101,10 +99,13 @@ var wordBubbles = function(){
      * Set a bubble for removal.
      * @param bubble
      */
-    that.removeBubble = function(bubble){
-        bubble.sprite.lifespan = 810;
-        game.add.tween(bubble.sprite).to({ alpha: 0}, 800, Phaser.Easing.Bounce.InOut, true, 0);
-        game.add.tween(bubble.sprite.scale).to({ x: 0.0, y:0.0 }, 800, Phaser.Easing.Back.InOut, true, 0);
+    that.removeBubble = function(bubble, callback){
+        bubble.removeNextStep = true;
+        game.add.tween(bubble.sprite).to({ alpha: 0 }, 800, Phaser.Easing.Bounce.InOut, true, 0);
+        var tween2 = game.add.tween(bubble.sprite.scale).to({ x: 0.0, y:0.0 }, 800, Phaser.Easing.Back.InOut, true, 0);
+        tween2.onComplete.add(function(){
+            callback();
+        }, this);
     };
 
     /**
@@ -117,19 +118,6 @@ var wordBubbles = function(){
         bubble.alpha = 1;
         game.add.tween(bubble.scale).to({ x: 0.3, y:0.3 }, 800, Phaser.Easing.Back.Out, true, 0);
     };
-
-    /**
-     * Called when a word has been collected.
-    that.wordCollected = function(){
-        if(inactive !== 3) {
-            inactive++;
-            gameState.incrementScore();
-        }
-        if(inactive === 3){
-            game.time.events.add(4000, nextWordCycle, this);
-            gameState.nextRound();
-        }
-    };*/
 
     /**
      * Position text correctly.

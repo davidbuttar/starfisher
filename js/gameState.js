@@ -56,6 +56,10 @@ var gameState = function(){
         return wordsCollectedThisRound === 3;
     };
 
+    that.getLevel = function(){
+      return round;
+    };
+
     /**
      * Update our score
      * @param newScore
@@ -92,6 +96,9 @@ var gameState = function(){
      * Update our score
      */
     that.nextRound = function(){
+        if(round === 6){
+            that.reset();
+        }
         wordsCollectedThisRound = 0;
         round += 1;
         updateLevelMessage();
