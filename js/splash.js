@@ -23,6 +23,7 @@ Splash.prototype = {
 		game.load.script('Main',  'js/main.js');
 		game.load.script('GameOver',  'js/gameover.js');
 		game.load.script('style',  'js/style.js');
+		game.load.script('GameState',  'js/GameState.js');
 	},
 
 	loadBgm: function () {
@@ -88,13 +89,12 @@ Splash.prototype = {
 		this.addGameMusic();
 		
     if(fontLoaded) {
-			var that = this;
 			setTimeout(function(){
 				game.time.advancedTiming = true;
-				that.game.state.start("Menu");
+				game.state.start("Menu");
 			},100);
 		}else{
-			setTimeout(this.game.state.states.Boot.create, 10);
+			setTimeout(game.state.states.Boot.create, 10);
 		}
 	}
 };

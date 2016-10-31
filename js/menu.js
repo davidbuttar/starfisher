@@ -32,6 +32,9 @@ Menu.prototype = {
     this.titleText.anchor.set(0.5);
     this.optionCount = 1;
     this.menuNodes = [];
+    this.upKey = game.input.keyboard.addKey(Phaser.Keyboard.UP);
+    this.downKey = game.input.keyboard.addKey(Phaser.Keyboard.DOWN);
+    this.spacebarKey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
   },
 
   create: function(){
@@ -43,7 +46,7 @@ Menu.prototype = {
 
     this.menuOptions.forEach(function (option) {
       var node = that.addMenuOption(option.title, function () {
-        that.game.state.start(option.key);
+        game.state.start(option.key);
       });
       node.navState = option.key;
       that.menuNodes.push(node);
@@ -51,6 +54,10 @@ Menu.prototype = {
 
     this.currentSelectedOption = 0; 
     this.menuNodes[0].setStyle(style.navitem.hover);
+
+    this.upKey.onDown.add(this.menuUp, this);
+    this.downKey.onDown.add(this.menuDown, this);
+    this.spacebarKey.onDown.add(this.menuSpacebar, this);
 	},
 
   setMenuItem: function(menuIndex) {
@@ -59,34 +66,32 @@ Menu.prototype = {
     this.menuNodes[menuIndex].setStyle(style.navitem.hover);
   },
 
-	update: function () {
-    var that = this;
+  menuUp: function(){
     var menuItemsLength = this.menuNodes.length - 1;
-    this.game.input.keyboard.onDownCallback = function(e){
-      
-      if(e.keyCode === that.keyActions.up) {
-        var indexValue = that.currentSelectedOption - 1; 
-        if(that.currentSelectedOption - 1 < 0) {
-          that.setMenuItem(menuItemsLength);
-        } else {
-          that.setMenuItem(indexValue);
-        }
-      }
-
-      if(e.keyCode === that.keyActions.down) {
-        var indexValue = that.currentSelectedOption + 1; 
-        if(indexValue > menuItemsLength) {
-          that.setMenuItem(0);
-        } else {
-          that.setMenuItem(indexValue);
-        }
-      }
-
-      if(e.keyCode === that.keyActions.spacebar) {
-        that.game.state.start(that.menuNodes[that.currentSelectedOption].navState);
-      }
-
+    var indexValue = this.currentSelectedOption - 1; 
+    if(this.currentSelectedOption - 1 < 0) {
+      this.setMenuItem(menuItemsLength);
+    } else {
+      this.setMenuItem(indexValue);
     }
+  },
+  menuDown: function(){
+    var menuItemsLength = this.menuNodes.length - 1;
+    var indexValue = this.currentSelectedOption + 1; 
+    if(indexValue > menuItemsLength) {
+      this.setMenuItem(0);
+    } else {
+      this.setMenuItem(indexValue);
+    }
+  },
+  menuSpacebar: function(){
+    game.state.start(this.menuNodes[this.currentSelectedOption].navState);
+  },
+
+  shutdown: function() {
+    game.input.keyboard.removeKeyCapture(Phaser.Keyboard.UP);
+    game.input.keyboard.removeKeyCapture(Phaser.Keyboard.DOWN);
+    game.input.keyboard.removeKeyCapture(Phaser.Keyboard.SPACEBAR);
   }
 
 };

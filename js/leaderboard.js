@@ -14,6 +14,7 @@ Leaderboard.prototype = {
     this.optionCount = 1;
 
     this.leaderboard = JSON.parse(localStorage.getItem( 'leaderboard'));
+    this.spacebarKey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
   },
 	
 	create: function(){
@@ -65,14 +66,15 @@ Leaderboard.prototype = {
       backToMenu.events.onInputUp.add(function(){
         game.state.start('Menu');
       });
+
+      this.spacebarKey.onDown.add(this.goBack, this);
 	},
 
-  update: function () {
-    var spacebar = 32;
-    game.input.keyboard.onDownCallback = function(e){
-      if(e.keyCode === spacebar) {
-        game.state.start('Menu');
-      }
-    }
+  goBack: function(){
+    game.state.start('Menu');
+  },
+
+  shutdown: function() {
+    game.input.keyboard.removeKeyCapture(Phaser.Keyboard.SPACEBAR);
   }
 };
