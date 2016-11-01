@@ -7,7 +7,7 @@ var FinalScore = function() {
     };
 
     that.init = function (gameDataIn) {
-        console.log(gameDataIn);
+
         gameData = gameDataIn;
         that.titleText = game.make.text(game.world.centerX, 80, "Final Score: "+gameData.score);
         that.titleText.anchor.setTo(0.5);

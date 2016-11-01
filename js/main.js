@@ -9,6 +9,7 @@ var Main = function (game) {
     var wordBubblesInstance = wordBubbles(gameStateInstance);
     var asteroidsInstance = asteroids(gameStateInstance);
     var starField;
+    var userInput;
 
     function fireBullet() {
         if (game.time.now > bulletTime) {
@@ -29,10 +30,10 @@ var Main = function (game) {
 
     /**
      * The user search terms etc.
-     * @param userInput
+     * @param data
      */
-    that.init = function(userInput){
-        console.log(userInput);
+    that.init = function(data){
+        userInput = data;
     };
 
     that.create = function () {
@@ -164,8 +165,12 @@ var Main = function (game) {
     };
 
     that.gameOver = function () {
-        game.state.start('FinalScore', true, false, {score:gameStateInstance.getScore(),
-            words:gameStateInstance.getWordsCollection()});
+        game.state.start('FinalScore', true, false, {
+            score:gameStateInstance.getScore(),
+            words:gameStateInstance.getWordsCollection(),
+            email:userInput.email,
+            subject:userInput.subject
+        });
     };
 
     that.render = function(){
