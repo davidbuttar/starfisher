@@ -91,8 +91,8 @@ var Main = function (game) {
      * Start the lastest round.
      */
     function nextRound(){
-        var currentLevel = gameStateInstance.getLevel();
-        if(currentLevel === 1){
+
+        if(gameStateInstance.gameComplete()){
             that.gameOver();
         }
         gameStateInstance.nextRound();

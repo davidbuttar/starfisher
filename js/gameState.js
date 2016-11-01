@@ -1,10 +1,12 @@
 var gameState = function(){
     var that = {};
+    that.MAX_LEVELS = 6;
     var score = 0;
     var scoreText, levelText;
     var wordsCollected = 0;
     var round = 0;
     var wordsCollectedThisRound = 0;
+
 
     /**
      * Create all our words for the first time.
@@ -100,12 +102,20 @@ var gameState = function(){
      * Update our score
      */
     that.nextRound = function(){
-        if(round === 6){
+        if(round === that.MAX_LEVELS){
             that.reset();
         }
         wordsCollectedThisRound = 0;
         round += 1;
         updateLevelMessage();
+    };
+
+    /**
+     * Is the game complete.
+     * @returns {boolean}
+     */
+    that.gameComplete = function(){
+        return (round === that.MAX_LEVELS);
     };
 
     return that;
