@@ -33,7 +33,7 @@ Boot.prototype = {
         game.load.script('GameState', 'js/gameState.js');
         game.load.script('GameIntro', 'js/gameIntro.js');
 
-        var leaderboard = [{name: 'david', score: 500}, {name: 'krish', score: 1000}, {name: 'tiago', score: 700}];
+        var leaderboard = [{email: 'david', score: 500}, {email: 'krish', score: 1000}, {email: 'tiago', score: 700}];
 
         if (localStorage.getItem('leaderboard') === null) {
             localStorage.setItem('leaderboard', JSON.stringify(leaderboard));

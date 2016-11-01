@@ -38,7 +38,8 @@ Leaderboard.prototype = {
     var topTen = this.leaderboard.slice(0,10);
 
     topTen.forEach(function (item) {
-      var name = item.email.substring(0, item.email.indexOf('@'));
+      var nameExtract = item.email && item.email.substring(0, item.email.indexOf('@')) || item.email;
+      var name = nameExtract ? nameExtract : 'ghost player';
 
       var style = {
           font: '30pt TheMinion',
