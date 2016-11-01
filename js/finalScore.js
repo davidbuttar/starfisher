@@ -18,8 +18,8 @@ var FinalScore = function() {
         that.titleText.strokeThickness = 1;
         that.titleText.setShadow(-4, 4, 'rgba(0,0,0,0.8)', 0);
 
-        that.summaryText = game.make.text(game.world.centerX, 160, 'Congratulations you targeted clinton with these ' +
-            gameData.words.length+' terms');
+        that.summaryText = game.make.text(game.world.centerX, 160, 'Congratulations you targeted '+gameData.subject+' with these ' +
+            gameData.words.length+' words');
         that.summaryText.anchor.setTo(0.5);
         that.summaryText.font = 'Nunito';
         that.summaryText.fontSize = 38;
@@ -53,6 +53,35 @@ var FinalScore = function() {
         backToMenu.events.onInputUp.add(function(){
             game.state.start('Menu');
         });
+
+        // Add our collected words
+
+        var leftOffset = 100;
+        var topOffset = 250;
+        var column = 0;
+
+        gameData.words.forEach(function(word){
+            var star = game.add.sprite(250*column + leftOffset, topOffset, 'bubble');
+            var text = game.add.text(star.width/2, star.height/2 + 18, word);
+            text.font = 'Nunito';
+            text.fontSize = 52;
+            text.align = 'left';
+            text.fill = '#222';
+            text.rotation = Phaser.Math.degToRad(-45);
+            text.strokeThickness = 1;
+            star.addChild(text);
+            text.anchor.setTo(0.5);
+            star.scale.set(0.35);
+
+            if(column === 5){
+                topOffset += 250;
+                column = 0;
+            }else{
+                column++;
+            }
+
+        });
+
     };
 
     that.shutdown = function() {
