@@ -105,14 +105,13 @@ var wordBubbles = function(gameStateInst){
     /**
      * Set a bubble for removal.
      * @param bubble
+     * @param callback
      */
     that.removeBubble = function(bubble, callback){
         bubble.removeNextStep = true;
         game.add.tween(bubble.sprite).to({ alpha: 0 }, 800, Phaser.Easing.Bounce.InOut, true, 0);
         var tween2 = game.add.tween(bubble.sprite.scale).to({ x: 0.0, y:0.0 }, 800, Phaser.Easing.Back.InOut, true, 0);
-        tween2.onComplete.add(function(){
-            callback();
-        }, this);
+        tween2.onComplete.add( callback, this);
     };
 
     /**

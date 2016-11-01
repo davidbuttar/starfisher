@@ -27,6 +27,14 @@ var Main = function (game) {
         }
     }
 
+    /**
+     * The user search terms etc.
+     * @param userInput
+     */
+    that.init = function(userInput){
+        console.log(userInput);
+    };
+
     that.create = function () {
 
         starField = game.add.tileSprite(0, 0, game.width, game.height, 'space');
@@ -51,7 +59,7 @@ var Main = function (game) {
         var asteroidCollisionGroup = game.physics.p2.createCollisionGroup();
 
         //  Create our ship sprite
-        rocket = game.add.sprite(scaleToPixelRatio(800), scaleToPixelRatio(540), 'rocket');
+        rocket = game.add.sprite(scaleToPixelRatio(800), scaleToPixelRatio(600), 'rocket');
         rocket.scale.set(scaleToPixelRatio(0.5));
         game.physics.p2.enable(rocket);
         rocket.body.mass = 0.5;
@@ -111,7 +119,7 @@ var Main = function (game) {
         if(body2.sprite.key === 'bubble') {
             body2.hits++;
             if (body2.hits === 6) {
-                gameStateInstance.wordCollected();
+                gameStateInstance.wordCollected(body2.sprite.wordRef.text);
                 wordBubblesInstance.removeBubble(body2, function(){
                     if(gameStateInstance.roundOver()){
                         asteroidsInstance.roundOver();
@@ -156,7 +164,8 @@ var Main = function (game) {
     };
 
     that.gameOver = function () {
-        this.game.state.start('Leaderboard', true, false, {score:gameStateInstance.getScore()});
+        game.state.start('FinalScore', true, false, {score:gameStateInstance.getScore(),
+            words:gameStateInstance.getWordsCollection()});
     };
 
     that.render = function(){

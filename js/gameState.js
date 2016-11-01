@@ -1,11 +1,12 @@
 var gameState = function(){
     var that = {};
-    that.MAX_LEVELS = 6;
+    that.MAX_LEVELS = 3;
     var score = 0;
     var scoreText, levelText;
     var wordsCollected = 0;
     var round = 0;
     var wordsCollectedThisRound = 0;
+    var wordsCollection = [];
 
 
     /**
@@ -21,7 +22,7 @@ var gameState = function(){
         scoreText.fill = '#fff';
         scoreText.strokeThickness = 1;
 
-        levelText = game.add.text(scaleToPixelRatio(800), scaleToPixelRatio(500), 'Level:'+round);
+        levelText = game.add.text(scaleToPixelRatio(800), scaleToPixelRatio(500), 'Avoid the bombardment, hit the stars to get the perfect content.'+round);
         levelText.anchor.setTo(0.5);
         levelText.font = 'Nunito';
         levelText.fontSize = scaleToPixelRatio(30);
@@ -38,14 +39,23 @@ var gameState = function(){
         score = 0;
         wordsCollected = 0;
         round = 0;
+        wordsCollection = [];
+    };
+
+    /**
+     * Get the collected words.
+     */
+    that.getWordsCollection = function(){
+      return wordsCollection;
     };
 
     /**
      * Called when a word has been collected.
      */
-    that.wordCollected = function(){
+    that.wordCollected = function(word){
         if(wordsCollectedThisRound !== 3) {
             wordsCollectedThisRound++;
+            wordsCollection.push(word);
             that.incrementScore();
         }
     };
@@ -85,7 +95,12 @@ var gameState = function(){
         inTween.onComplete.add(function(){
             game.add.tween(levelText).to({ alpha: 0}, 800, Phaser.Easing.Back.Out, true, 2000);
         }, this);
-        levelText.text = 'LEVEL:' +round;
+
+        if(round === 1){
+            levelText.text = 'Avoid the bombardment\n hit the stars to get the perfect content.';
+        }else {
+            levelText.text = 'LEVEL:' + round;
+        }
 
     }
 
