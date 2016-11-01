@@ -3,8 +3,8 @@ var Leaderboard = function() {};
 
 Leaderboard.prototype = {
   
-  init: function (gameData) {
-      console.log(gameData);
+  init: function (playerData) {
+
     this.titleText = game.make.text(game.world.centerX, 100, "High Scores", {
       font: 'bold 60pt TheMinion',
       fill: '#FDFFB5',
@@ -15,6 +15,13 @@ Leaderboard.prototype = {
     this.optionCount = 1;
 
     this.leaderboard = JSON.parse(localStorage.getItem( 'leaderboard'));
+
+    if(playerData) {
+      this.leaderboard.push(playerData);
+      localStorage.setItem('leaderboard', JSON.stringify(this.leaderboard));
+    }
+
+
     this.spacebarKey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
   },
 	
@@ -28,20 +35,21 @@ Leaderboard.prototype = {
       return parseFloat(b.score) - parseFloat(a.score);
     });
 
-    this.leaderboard.forEach(function (item) {
-      var that = this;
+    var topTen = this.leaderboard.slice(0,10);
+
+    topTen.forEach(function (item) {
+      var name = item.email.substring(0, item.email.indexOf('@'));
 
       var style = {
           font: '30pt TheMinion',
           srokeThickness: 4,
           align: 'left',
-          fill: 'white',
-          tabs: 350
-        }
+          fill: 'white'
+        };
 
-      var txt = game.add.text(game.world.centerX + 150, 
-        (leadersCount * 80) + 340, 
-        (item.name + '\t' + item.score),
+      var txt = game.add.text(game.world.centerX,
+        (leadersCount * 80) + 200,
+        (name + ': ' + item.score),
         style 
         );
       
@@ -51,8 +59,8 @@ Leaderboard.prototype = {
       leadersCount++;
     });
 
-    var backToMenu = game.add.text(game.world.centerX, 
-        (leadersCount * 80) + 400, 
+    var backToMenu = game.add.text(game.world.centerX,
+      game.world.height - 50,
         'Hit Spacebar for Main Menu', 
         {
           font: '30pt TheMinion',
@@ -61,12 +69,15 @@ Leaderboard.prototype = {
           fill: 'red'
         });
       
-      backToMenu.anchor.setTo(0.5);
-      backToMenu.inputEnabled = true;
+    backToMenu.anchor.setTo(0.5);
+    backToMenu.inputEnabled = true;
 
-      backToMenu.events.onInputUp.add(function(){
+    backToMenu.alpha = 0;
+    game.add.tween(backToMenu).to( { alpha: 1 }, 500, Phaser.Easing.Linear.None, true, 0, 250, true);
+
+    backToMenu.events.onInputUp.add(function(){
         game.state.start('Menu');
-      });
+    });
 
       this.spacebarKey.onDown.add(this.goBack, this);
 	},
