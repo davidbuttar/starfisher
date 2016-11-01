@@ -30,6 +30,8 @@ var wordBubbles = function(gameStateInst){
      * Create all our words for the first time.
      */
     that.create = function(collisionGroups){
+        wordAdded = 0;
+        bubbles = [];
         var words = generateWordsInstance.get(1);
         words.forEach(function (word) {
             that.add(word, collisionGroups);

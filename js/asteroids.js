@@ -30,6 +30,8 @@ var asteroids = function(curGameState){
      * Create all our words for the first time.
      */
     that.create = function(collisionGroups){
+        wordAdded = 0;
+        asteroidList = [];
         var words = generateWordsInstance.getGeneric();
         words.forEach(function (word) {
             that.add(word, collisionGroups);
@@ -53,6 +55,7 @@ var asteroids = function(curGameState){
         asteroid.scale.set(scaleToPixelRatio(scale));
 
         game.physics.p2.enable(asteroid);
+        console.log(asteroid.body);
         asteroid.body.clearShapes();
         asteroid.body.loadPolygon('physicsData3', 'asteroid');
         asteroid.body.setCollisionGroup(collisionGroups[0]);
@@ -100,6 +103,7 @@ var asteroids = function(curGameState){
     that.newCycle = function(){
         wordAdded = 0;
         asteroidList.forEach(function(asteroid){
+            console.log(asteroid.bubble);
             asteroid.bubble.body.hits = 0;
             asteroid.bubble.body.x = startingPositions[wordAdded].x;
             asteroid.bubble.body.y = startingPositions[wordAdded].y;
