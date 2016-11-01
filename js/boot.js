@@ -29,7 +29,6 @@ Boot.prototype = {
 	},
 	
 	create: function(){
-		this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 		game.state.add('Splash', Splash);
     game.state.start('Splash');
 	}

@@ -9,7 +9,7 @@ Menu.prototype = {
   },
 
   menuOptions: [
-    { key: 'Main', title: 'Play'},
+    { key: 'GameIntro', title: 'Play'},
     { key: 'Leaderboard', title: 'Leaderboard' },
     { key: 'Settings', title: 'Settings' }
   ],

@@ -23,7 +23,8 @@ Splash.prototype = {
 		game.load.script('Main',  'js/main.js');
 		game.load.script('GameOver',  'js/gameover.js');
 		game.load.script('style',  'js/style.js');
-		game.load.script('GameState',  'js/GameState.js');
+		game.load.script('GameState',  'js/gameState.js');
+		game.load.script('GameIntro',  'js/gameIntro.js');
 	},
 
 	loadBgm: function () {
@@ -75,6 +76,7 @@ Splash.prototype = {
 		game.state.add("Leaderboard", Leaderboard);
 		game.state.add("Main", Main);
 		game.state.add("GameOver", GameOver);
+		game.state.add("GameIntro", GameIntro);
 	},
 
 	addGameMusic: function () {
@@ -84,17 +86,19 @@ Splash.prototype = {
 	},
 	
 	create: function(){
+		var that = this;
     this.status.setText('Ready!');
 		this.addGameStates();
 		this.addGameMusic();
 		
     if(fontLoaded) {
 			setTimeout(function(){
+				that.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 				game.time.advancedTiming = true;
 				game.state.start("Menu");
 			},100);
 		}else{
-			setTimeout(game.state.states.Boot.create, 10);
+			setTimeout(game.state.states.Splash.create, 10);
 		}
 	}
 };
