@@ -1,6 +1,6 @@
 var gameState = function(){
     var that = {};
-    that.MAX_LEVELS = 3;
+    that.MAX_LEVELS = 1;
     var score = 0;
     var scoreText, levelText;
     var wordsCollected = 0;

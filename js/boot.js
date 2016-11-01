@@ -19,6 +19,19 @@ Boot.prototype = {
         game.load.script('splash', 'js/splash.js');
         game.load.image('space', 'assets/space-bg.png');
         game.load.image('space2', 'assets/space-bg-2.png');
+        game.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
+        game.load.script('wordBubbles', 'js/wordBubbles.js');
+        game.load.script('generateWords', 'js/generateWords.js');
+        game.load.script('asteroids', 'js/asteroids.js');
+        game.load.physics('physicsData', 'assets/sprites.json');
+        game.load.script('Menu', 'js/menu.js');
+        game.load.script('Leaderboard', 'js/leaderboard.js');
+        game.load.script('FinalScore', 'js/finalScore.js');
+        game.load.script('Main', 'js/main.js');
+        game.load.script('GameOver', 'js/gameover.js');
+        game.load.script('style', 'js/style.js');
+        game.load.script('GameState', 'js/gameState.js');
+        game.load.script('GameIntro', 'js/gameIntro.js');
 
         var leaderboard = [{name: 'david', score: 500}, {name: 'krish', score: 1000}, {name: 'tiago', score: 700}];
 

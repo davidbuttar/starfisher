@@ -1,46 +1,32 @@
-var fontLoaded = false;
-
 Splash = function (game) {
-};
-
-Splash.prototype = {
-
-    init: function () {
+    var that = {};
+    
+    that.init =  function () {
         game.add.tileSprite(0, 0, game.width, game.height, 'space');
-        this.loadingBar = game.make.sprite(game.world.centerX - (387 / 2), 400, "loading");
-        this.logo = game.make.sprite(game.world.centerX, 200, 'brand');
-        this.status = game.make.text(game.world.centerX, 380, 'Loading...', {fill: 'white'});
-        utils.centerGameObjects([this.logo, this.status]);
-    },
+        that.loadingBar = game.make.sprite(game.world.centerX - (387 / 2), 400, "loading");
+        that.logo = game.make.sprite(game.world.centerX, 200, 'brand');
+        that.status = game.make.text(game.world.centerX, 380, 'Loading...', {fill: 'white'});
+        utils.centerGameObjects([that.logo, that.status]);
 
-    loadScripts: function () {
-        game.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
-        game.load.script('wordBubbles', 'js/wordBubbles.js');
-        game.load.script('generateWords', 'js/generateWords.js');
-        game.load.script('asteroids', 'js/asteroids.js');
-        game.load.physics('physicsData', 'assets/sprites.json');
-        game.load.script('Menu', 'js/menu.js');
-        game.load.script('Leaderboard', 'js/leaderboard.js');
-        game.load.script('FinalScore', 'js/finalScore.js');
-        game.load.script('Main', 'js/main.js');
-        game.load.script('GameOver', 'js/gameover.js');
-        game.load.script('style', 'js/style.js');
-        game.load.script('GameState', 'js/gameState.js');
-        game.load.script('GameIntro', 'js/gameIntro.js');
-    },
+    };
 
-    loadBgm: function () {
+    that.loadScripts = function () {
+
+    };
+
+    that.loadBgm = function () {
         game.load.audio('dangerous', 'assets/bgm/Dangerous.mp3');
-    },
-    loadImages: function () {
+    };
+    
+    that.loadImages = function () {
 
         game.load.image('bullet', 'assets/blast.png');
         game.load.image('rocket', 'assets/Rocket3.png');
         game.load.image('bubble', 'assets/Star2.png');
         game.load.image('asteroid', 'assets/asteroid.png');
-    },
+    };
 
-    loadFonts: function () {
+    that.loadFonts = function () {
         WebFontConfig = {
             //  'active' means all requested fonts have finished loading
             //  We set a 1 second delay before calling 'createText'.
@@ -58,20 +44,20 @@ Splash.prototype = {
                 urls: ['assets/style/theminion.css']
             }
         }
-    },
+    };
 
-    preload: function () {
-        game.add.existing(this.logo).scale.setTo(0.5);
-        game.add.existing(this.loadingBar);
-        game.add.existing(this.status);
-        this.load.setPreloadSprite(this.loadingBar);
-        this.loadScripts();
-        this.loadImages();
-        this.loadFonts();
-        this.loadBgm();
-    },
+    that.preload = function () {
+        game.add.existing(that.logo).scale.setTo(0.5);
+        game.add.existing(that.loadingBar);
+        game.add.existing(that.status);
+        game.load.setPreloadSprite(that.loadingBar);
+        that.loadScripts();
+        that.loadImages();
+        that.loadFonts();
+        that.loadBgm();
+    };
 
-    addGameStates: function () {
+    that.addGameStates =  function () {
         //Add all states
         game.state.add("Menu", Menu);
         game.state.add("Leaderboard", Leaderboard);
@@ -79,18 +65,17 @@ Splash.prototype = {
         game.state.add("Main", Main);
         game.state.add("GameOver", GameOver);
         game.state.add("GameIntro", GameIntro);
-    },
+    };
 
-    addGameMusic: function () {
+    that.addGameMusic = function () {
         music = game.add.audio('dangerous');
         music.loop = true;
         music.play();
-    },
+    };
 
-    create: function () {
-        var that = this;
-        this.addGameStates();
-        this.addGameMusic();
+    that.create = function () {
+        that.addGameStates();
+        that.addGameMusic();
 
         if (fontLoaded) {
             setTimeout(function () {
@@ -102,4 +87,6 @@ Splash.prototype = {
             setTimeout(game.state.states.Splash.create, 10);
         }
     }
+
+    return that;
 };
