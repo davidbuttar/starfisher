@@ -6,11 +6,9 @@ function scaleToPixelRatio(value) {
     return value * 1;
 }
 
-var game = new Phaser.Game(scaleToPixelRatio(1600), scaleToPixelRatio(1080), Phaser.AUTO, 'game'),
+var game = new Phaser.Game(scaleToPixelRatio(1600), scaleToPixelRatio(1080), Phaser.AUTO, 'game');
 
-    Boot = function (game) {
-    };
-
+Boot = function (game) {};
 
 Boot.prototype = {
 
