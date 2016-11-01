@@ -32,6 +32,7 @@ Boot.prototype = {
         game.load.script('style', 'js/style.js');
         game.load.script('GameState', 'js/gameState.js');
         game.load.script('GameIntro', 'js/gameIntro.js');
+        game.load.script('Credits', 'js/credits.js');
 
         var leaderboard = [{email: 'david', score: 500}, {email: 'krish', score: 1000}, {email: 'tiago', score: 700}];
 

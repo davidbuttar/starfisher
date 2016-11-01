@@ -80,7 +80,7 @@ Leaderboard.prototype = {
         game.state.start('Menu');
     });
 
-      this.spacebarKey.onDown.add(this.goBack, this);
+    this.spacebarKey.onDown.add(this.goBack, this);
 	},
 
   goBack: function(){

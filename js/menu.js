@@ -11,7 +11,7 @@ Menu.prototype = {
   menuOptions: [
     { key: 'GameIntro', title: 'Play'},
     { key: 'Leaderboard', title: 'Leaderboard' },
-    { key: 'Settings', title: 'Settings' }
+    { key: 'Credits', title: 'Credits' }
   ],
 
   menuNodes: [],

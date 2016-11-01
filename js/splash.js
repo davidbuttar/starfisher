@@ -61,6 +61,7 @@ Splash = function (game) {
         //Add all states
         game.state.add("Menu", Menu);
         game.state.add("Leaderboard", Leaderboard);
+        game.state.add("Credits", Credits);
         game.state.add("FinalScore", FinalScore);
         game.state.add("Main", Main);
         game.state.add("GameOver", GameOver);
@@ -86,7 +87,7 @@ Splash = function (game) {
         } else {
             setTimeout(game.state.states.Splash.create, 10);
         }
-    }
+    };
 
     return that;
 };
