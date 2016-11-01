@@ -2,15 +2,16 @@ Credits = function(game) {
   var that = {};
 
   var spaceBarKey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-  var logo = game.make.sprite(game.world.centerX, 200, 'brand');
 
   that.init = function() {
+    var logo = game.make.sprite(game.world.centerX, 200, 'brand');
+
     game.add.tileSprite(0, 0, game.width, game.height, 'space');
     utils.centerGameObjects([logo]);
+    game.add.existing(logo).scale.setTo(0.5);
   };
 
   that.create = function() {
-    game.add.existing(logo).scale.setTo(0.5);
     var backToMenu = game.add.text(game.world.centerX,
       game.world.height - 50,
       'Hit Spacebar for Main Menu',
