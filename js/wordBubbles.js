@@ -1,8 +1,8 @@
-var wordBubbles = function(){
+var wordBubbles = function(gameStateInst){
     var that = {};
     var bubbles = [];
     var generateWordsInstance = generateWords();
-    var inactive = 0;
+    var wordScale = 0.35;
     var wordAdded = 0;
 
     var startingPositions = [
@@ -30,7 +30,7 @@ var wordBubbles = function(){
      * Create all our words for the first time.
      */
     that.create = function(collisionGroups){
-        var words = generateWordsInstance.get();
+        var words = generateWordsInstance.get(1);
         words.forEach(function (word) {
             that.add(word, collisionGroups);
         });
@@ -44,9 +44,10 @@ var wordBubbles = function(){
     that.add = function(word, collisionGroups){
         var wordBubble = {};
 
+        utils.resizePolygon('physicsData', 'physicsData2', 'Star', scaleToPixelRatio(wordScale));
         //  Create our ship sprite
         var bubble = game.add.sprite(-100, -100, 'bubble');
-        bubble.scale.set(0.3);
+        bubble.scale.set(wordScale);
 
         game.physics.p2.enable(bubble);
         bubble.body.clearShapes();
@@ -69,8 +70,10 @@ var wordBubbles = function(){
 
         bubble.addChild(text);
 
-        wordBubble.text = text;
+        bubble.wordRef = text;
+        //wordBubble.text = text;
         wordBubble.bubble = bubble;
+
         wordAdded++;
 
         bubbles.push(wordBubble);
@@ -81,7 +84,9 @@ var wordBubbles = function(){
      */
     that.newCycle = function(){
         wordAdded = 0;
-        bubbles.forEach(function(bubble){
+        var words = generateWordsInstance.get(gameStateInst.getLevel());
+        bubbles.forEach(function(bubble, index){
+            bubble.bubble.wordRef.text = words[index].term;
             bubble.bubble.body.hits = 0;
             bubble.bubble.body.x = startingPositions[wordAdded].x;
             bubble.bubble.body.y = startingPositions[wordAdded].y;
@@ -116,7 +121,7 @@ var wordBubbles = function(){
         bubble.scale.x = 0.1;
         bubble.scale.y = 0.1;
         bubble.alpha = 1;
-        game.add.tween(bubble.scale).to({ x: 0.3, y:0.3 }, 800, Phaser.Easing.Back.Out, true, 0);
+        game.add.tween(bubble.scale).to({ x: scaleToPixelRatio(wordScale), y:scaleToPixelRatio(wordScale) }, 800, Phaser.Easing.Back.Out, true, 0);
     };
 
     /**

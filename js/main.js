@@ -5,9 +5,9 @@ var Main = function (game) {
     var rocket;
     var bullet;
     var bulletTime = 0;
-    var wordBubblesInstance = wordBubbles();
-    var asteroidsInstance = asteroids();
     var gameStateInstance = gameState();
+    var wordBubblesInstance = wordBubbles(gameStateInstance);
+    var asteroidsInstance = asteroids(gameStateInstance);
     var starField;
 
     function fireBullet() {
@@ -28,7 +28,6 @@ var Main = function (game) {
     }
 
     that.create = function () {
-        utils.resizePolygon('physicsData', 'physicsData2', 'Star', scaleToPixelRatio(0.3));
 
         starField = game.add.tileSprite(0, 0, game.width, game.height, 'space');
 
@@ -92,6 +91,10 @@ var Main = function (game) {
      * Start the lastest round.
      */
     function nextRound(){
+        var currentLevel = gameStateInstance.getLevel();
+        if(currentLevel === 1){
+            that.gameOver();
+        }
         gameStateInstance.nextRound();
 
         game.time.events.add(2000, function(){
@@ -132,7 +135,7 @@ var Main = function (game) {
         }
 
         if (cursors.up.isDown) {
-            rocket.body.thrust(scaleToPixelRatio(1500));
+            rocket.body.thrust(scaleToPixelRatio(1900));
         } else if (cursors.down.isDown) {
             rocket.body.reverse(scaleToPixelRatio(40));
         }
@@ -142,10 +145,8 @@ var Main = function (game) {
         }
 
         wordBubblesInstance.update();
-        asteroidsInstance.update(rocket, gameStateInstance.getLevel());
-
-        utils.constrainVelocity(rocket,60);
-
+        asteroidsInstance.update(rocket);
+        utils.constrainVelocity(rocket,55);
         utils.screenWrap(rocket.body);
 
     };
@@ -155,7 +156,7 @@ var Main = function (game) {
     };
 
     that.gameOver = function () {
-        this.game.state.start('GameOver');
+        this.game.state.start('Leaderboard', true, false, {score:gameStateInstance.getScore()});
     };
 
     that.render = function(){

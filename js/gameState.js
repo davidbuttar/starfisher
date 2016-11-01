@@ -60,6 +60,10 @@ var gameState = function(){
       return round;
     };
 
+    that.getScore = function(){
+        return score;
+    };
+
     /**
      * Update our score
      * @param newScore

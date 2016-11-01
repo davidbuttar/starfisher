@@ -23,7 +23,7 @@ Menu.prototype = {
   },
 
 	init: function () {
-    this.titleText = game.make.text(game.world.centerX, 100, "Spacefisher", {
+    this.titleText = game.make.text(game.world.centerX, 100, "Content Bombardment", {
       font: 'bold 60pt TheMinion',
       fill: '#FDFFB5',
       align: 'center'
@@ -85,7 +85,7 @@ Menu.prototype = {
     }
   },
   menuSpacebar: function(){
-    game.state.start(this.menuNodes[this.currentSelectedOption].navState);
+      game.state.start(this.menuNodes[this.currentSelectedOption].navState);
   },
 
   shutdown: function() {

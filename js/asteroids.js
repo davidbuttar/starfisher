@@ -1,7 +1,8 @@
-var asteroids = function(){
+var asteroids = function(curGameState){
     var that = {};
-    var bubbles = [];
+    var asteroidList = [];
     var wordAdded = 0;
+    var scale = 0.35;
     var generateWordsInstance = generateWords();
 
     var startingPositions = [
@@ -29,7 +30,7 @@ var asteroids = function(){
      * Create all our words for the first time.
      */
     that.create = function(collisionGroups){
-        var words = generateWordsInstance.get();
+        var words = generateWordsInstance.getGeneric();
         words.forEach(function (word) {
             that.add(word, collisionGroups);
         });
@@ -44,26 +45,26 @@ var asteroids = function(){
      */
     that.add = function(word, collisionGroups){
 
-        var wordBubble = {};
-        utils.resizePolygon('physicsData', 'physicsData3', 'asteroid', scaleToPixelRatio(0.3));
+        var asteroidObj = {};
+        utils.resizePolygon('physicsData', 'physicsData3', 'asteroid', scaleToPixelRatio(scale));
 
         //  Create our ship sprite
-        var bubble = game.add.sprite(-200, -200, 'asteroid');
-        bubble.scale.set(scaleToPixelRatio(0.3));
+        var asteroid = game.add.sprite(-200, -200, 'asteroid');
+        asteroid.scale.set(scaleToPixelRatio(scale));
 
-        game.physics.p2.enable(bubble);
-        bubble.body.clearShapes();
-        bubble.body.loadPolygon('physicsData3', 'asteroid');
-        bubble.body.setCollisionGroup(collisionGroups[0]);
-        bubble.body.collides(collisionGroups);
+        game.physics.p2.enable(asteroid);
+        asteroid.body.clearShapes();
+        asteroid.body.loadPolygon('physicsData3', 'asteroid');
+        asteroid.body.setCollisionGroup(collisionGroups[0]);
+        asteroid.body.collides(collisionGroups);
 
-        bubble.body.velocity.x= startingPositions[wordAdded].vx;
-        bubble.body.velocity.y= startingPositions[wordAdded].vy;
+        asteroid.body.velocity.x= startingPositions[wordAdded].vx;
+        asteroid.body.velocity.y= startingPositions[wordAdded].vy;
 
         // Using this to record how many hits on our objects from laser blasts.
-        bubble.body.hits = 0;
+        asteroid.body.hits = 0;
 
-        bubble.lifespan = 1;
+        asteroid.lifespan = 1;
 
         var text = game.add.text(0, 0, word.term);
         text.anchor.setTo(0.5);
@@ -72,15 +73,15 @@ var asteroids = function(){
         text.align = 'left';
         text.fill = '#fff';
         text.strokeThickness = 1;
-        text.setShadow(-4, 4, 'rgba(0,0,0,0.4)', 0);
+        text.setShadow(-4, 4, 'rgba(0,0,0,0.8)', 0);
 
-        bubble.addChild(text);
+        asteroid.addChild(text);
 
-        wordBubble.text = text;
-        wordBubble.bubble = bubble;
+        asteroidObj.text = text;
+        asteroidObj.bubble = asteroid;
         wordAdded++;
 
-        bubbles.push(wordBubble);
+        asteroidList.push(asteroidObj);
     };
 
 
@@ -90,7 +91,7 @@ var asteroids = function(){
      * @returns {*}
      */
     that.get = function(index){
-        return bubbles[index].bubble;
+        return asteroidList[index].bubble;
     };
 
     /**
@@ -98,60 +99,59 @@ var asteroids = function(){
      */
     that.newCycle = function(){
         wordAdded = 0;
-        bubbles.forEach(function(bubble){
-            bubble.bubble.body.hits = 0;
-            bubble.bubble.body.x = startingPositions[wordAdded].x;
-            bubble.bubble.body.y = startingPositions[wordAdded].y;
-            bubble.bubble.body.angularVelocity = 0;
-            bubble.bubble.body.rotation = Phaser.Math.degToRad(0);
-            bubble.bubble.body.velocity.x= startingPositions[wordAdded].vx;
-            bubble.bubble.body.velocity.y= startingPositions[wordAdded].vy;
-            that.animateIn(bubble.bubble);
-            bubble.bubble.revive();
+        asteroidList.forEach(function(asteroid){
+            asteroid.bubble.body.hits = 0;
+            asteroid.bubble.body.x = startingPositions[wordAdded].x;
+            asteroid.bubble.body.y = startingPositions[wordAdded].y;
+            asteroid.bubble.body.angularVelocity = 0;
+            asteroid.bubble.body.rotation = Phaser.Math.degToRad(0);
+            asteroid.bubble.body.velocity.x= startingPositions[wordAdded].vx;
+            asteroid.bubble.body.velocity.y= startingPositions[wordAdded].vy;
+            that.animateIn(asteroid.bubble);
+            asteroid.bubble.revive();
             wordAdded++;
         });
     };
 
     /**
      * Use tweens to give bubbles an interesting entrance.
-     * @param bubble
+     * @param asteroid
      */
-    that.animateIn = function(bubble){
-        bubble.scale.x = 0.1;
-        bubble.scale.y = 0.1;
-        bubble.alpha = 1;
-        game.add.tween(bubble.scale).to({ x: 0.3, y:0.3 }, 800, Phaser.Easing.Back.Out, true, 0);
+    that.animateIn = function(asteroid){
+        asteroid.scale.x = 0.1;
+        asteroid.scale.y = 0.1;
+        asteroid.alpha = 1;
+        game.add.tween(asteroid.scale).to({ x: scaleToPixelRatio(scale), y:scaleToPixelRatio(scale) }, 800, Phaser.Easing.Back.Out, true, 0);
     };
 
     /**
      * Use tweens to give bubbles an interesting entrance.
-     * @param bubble
+     * @param asteroid
      */
-    that.animateOut = function(bubble){
-        bubble.body.removeNextStep = true;
-        game.add.tween(bubble).to({ alpha: 0 }, 400, Phaser.Easing.Bounce.Out, true, 0);
-        game.add.tween(bubble.scale).to({ x: 0.1, y:0.1 }, 400, Phaser.Easing.Back.Out, true, 0);
+    that.animateOut = function(asteroid){
+        asteroid.body.removeNextStep = true;
+        game.add.tween(asteroid).to({ alpha: 0 }, 400, Phaser.Easing.Bounce.Out, true, 0);
+        game.add.tween(asteroid.scale).to({ x: 0.1, y:0.1 }, 400, Phaser.Easing.Back.Out, true, 0);
     };
 
     /**
      * End of level remove remaining asteroids
      */
     that.roundOver = function(){
-        bubbles.forEach(function(bubble){
-            that.animateOut(bubble.bubble);
+        asteroidList.forEach(function(asteroid){
+            that.animateOut(asteroid.bubble);
         });
     };
 
     /**
      * Position text correctly.
      */
-    that.update = function(rocket, level){
-        console.log(level);
-        bubbles.forEach(function(bubble){
-            if(bubble.bubble && bubble.bubble.exists){
-                utils.screenWrap(bubble.bubble.body);
-                utils.accelerateToObject(bubble.bubble, rocket, 400*level);
-                utils.constrainVelocity(bubble.bubble, 90);
+    that.update = function(rocket){
+        asteroidList.forEach(function(asteroid){
+            if(asteroid.bubble && asteroid.bubble.exists){
+                utils.screenWrap(asteroid.bubble.body);
+                utils.accelerateToObject(asteroid.bubble, rocket, 400*curGameState.getLevel());
+                utils.constrainVelocity(asteroid.bubble, 90);
             }
         });
     };
@@ -160,8 +160,8 @@ var asteroids = function(){
      * Show bounding borders for debug
      */
     that.debug = function(){
-        bubbles.forEach(function(bubble){
-            game.debug.body(bubble);
+        asteroidList.forEach(function(asteroid){
+            game.debug.body(asteroid);
         });
     };
 

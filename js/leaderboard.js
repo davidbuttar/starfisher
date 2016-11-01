@@ -3,7 +3,8 @@ var Leaderboard = function() {};
 
 Leaderboard.prototype = {
   
-  init: function () {
+  init: function (gameData) {
+      console.log(gameData);
     this.titleText = game.make.text(game.world.centerX, 100, "High Scores", {
       font: 'bold 60pt TheMinion',
       fill: '#FDFFB5',
