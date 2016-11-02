@@ -35,7 +35,7 @@ GameIntro.prototype = {
       borderRadius: 6
     });
 
-    this.contentText = game.make.text(game.world.centerX, 450, "Content", {
+    this.contentText = game.make.text(game.world.centerX, 450, "Topic", {
       font: 'bold 30pt '+utils.FONT1,
       fill: '#fff',
       align: 'center'
