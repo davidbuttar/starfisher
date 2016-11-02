@@ -6,8 +6,8 @@ Leaderboard.prototype = {
   init: function (playerData) {
 
     this.titleText = game.make.text(game.world.centerX, 100, "High Scores", {
-      font: 'bold 60pt TheMinion',
-      fill: '#FDFFB5',
+      font: 'bold 60pt '+utils.FONT1,
+      fill: utils.TEXTCOLOR1,
       align: 'center'
     });
     this.titleText.setShadow(3, 3, 'rgba(0,0,0,0.5)', 5);
@@ -42,7 +42,7 @@ Leaderboard.prototype = {
       var name = nameExtract ? nameExtract : 'ghost player';
 
       var style = {
-          font: '30pt TheMinion',
+          font: '30pt '+utils.FONT1,
           srokeThickness: 4,
           align: 'left',
           fill: 'white'
@@ -64,7 +64,7 @@ Leaderboard.prototype = {
       game.world.height - 50,
         'Hit Spacebar for Main Menu', 
         {
-          font: '30pt TheMinion',
+          font: '30pt '+utils.FONT1,
           srokeThickness: 4,
           align: 'left',
           fill: 'red'

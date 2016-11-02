@@ -5,8 +5,8 @@ GameIntro.prototype = {
 
 	init: function () {
     this.titleText = game.make.text(game.world.centerX, 100, "Content Bombardment", {
-      font: 'bold 60pt TheMinion',
-      fill: '#FDFFB5',
+      font: 'bold 60pt '+utils.FONT1,
+      fill: utils.TEXTCOLOR1,
       align: 'center'
     });
     this.titleText.setShadow(3, 3, 'rgba(0,0,0,0.5)', 5);
@@ -18,8 +18,8 @@ GameIntro.prototype = {
 
   addInputs: function() {
     this.emailText = game.make.text(game.world.centerX, 260, "Your Email", {
-      font: 'bold 30pt TheMinion',
-      fill: '#FDFFB5',
+      font: 'bold 30pt '+utils.FONT1,
+      fill: '#fff',
       align: 'center'
     });
 
@@ -35,11 +35,9 @@ GameIntro.prototype = {
       borderRadius: 6
     });
 
-    this.emailInput.focus = true;
-
     this.contentText = game.make.text(game.world.centerX, 450, "Content", {
-      font: 'bold 30pt TheMinion',
-      fill: '#FDFFB5',
+      font: 'bold 30pt '+utils.FONT1,
+      fill: '#fff',
       align: 'center'
     });
 
@@ -56,13 +54,13 @@ GameIntro.prototype = {
     });
 
     this.playActionText = game.make.text(game.world.centerX, 800, "Start", {
-      font: 'bold 30pt TheMinion',
+      font: 'bold 30pt '+utils.FONT1,
       fill: 'red',
       align: 'center'
     });
 
     this.backToMenuText = game.make.text(game.world.centerX, 700, "Back to menu", {
-      font: 'bold 30pt TheMinion',
+      font: 'bold 30pt '+utils.FONT1,
       fill: 'white',
       align: 'center'
     });

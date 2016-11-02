@@ -11,17 +11,17 @@ var FinalScore = function() {
         gameData = gameDataIn;
         that.titleText = game.make.text(game.world.centerX, 80, "Final Score: "+gameData.score);
         that.titleText.anchor.setTo(0.5);
-        that.titleText.font = 'Nunito';
+        that.titleText.font = utils.FONT1;
         that.titleText.fontSize = 50;
         that.titleText.align = 'center';
-        that.titleText.fill = '#70F8FF';
+        that.titleText.fill = utils.TEXTCOLOR1;
         that.titleText.strokeThickness = 1;
         that.titleText.setShadow(-4, 4, 'rgba(0,0,0,0.8)', 0);
 
         that.summaryText = game.make.text(game.world.centerX, 160, 'Congratulations you targeted '+gameData.subject+' with these ' +
             gameData.words.length+' words');
         that.summaryText.anchor.setTo(0.5);
-        that.summaryText.font = 'Nunito';
+        that.summaryText.font = utils.FONT1;
         that.summaryText.fontSize = 38;
         that.summaryText.align = 'center';
         that.summaryText.fill = '#70F8FF';
@@ -37,10 +37,10 @@ var FinalScore = function() {
         game.add.existing(that.summaryText);
         that.spacebarKey.onDown.add(goBack, this);
 
-        var backToMenu = game.add.text(game.world.centerX, 1000,
+        var backToMenu = game.add.text(game.world.centerX, 1040,
             'Hit Spacebar to Continue',
             {
-                font: 'Nunito',
+                font: utils.FONT1,
                 srokeThickness: 4,
                 align: 'left',
                 fill: 'red'

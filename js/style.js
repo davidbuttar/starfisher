@@ -10,7 +10,7 @@ var style;
   style = {
     navitem: {
       base: {
-        font: '30pt TheMinion',
+        font: '30pt '+utils.FONT1,
         align: 'left',
         srokeThickness: 4
       },

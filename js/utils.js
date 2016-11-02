@@ -1,5 +1,7 @@
 var utils = (function(){
 
+
+
     function screenWrap(sprite) {
         if (sprite.x < 0) {
 
@@ -132,6 +134,8 @@ var utils = (function(){
         constrainVelocity:constrainVelocity,
         accelerateToObject: accelerateToObject,
         centerGameObjects: centerGameObjects,
-        addMenuOption: addMenuOption
+        addMenuOption: addMenuOption,
+        FONT1: 'TheMinion',
+        TEXTCOLOR1: '#70F8FF'
     };
 })();

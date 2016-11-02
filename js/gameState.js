@@ -1,6 +1,6 @@
 var gameState = function(){
     var that = {};
-    that.MAX_LEVELS = 6;
+    that.MAX_LEVELS = 1;
     var score = 0;
     var scoreText, levelText;
     var wordsCollected = 0;
@@ -16,7 +16,7 @@ var gameState = function(){
         that.reset();
         scoreText = game.add.text(scaleToPixelRatio(800), scaleToPixelRatio(1060), 'SCORE:'+score);
         scoreText.anchor.setTo(0.5);
-        scoreText.font = 'Nunito';
+        scoreText.font = utils.FONT1;
         scoreText.fontSize = scaleToPixelRatio(20);
         scoreText.align = 'center';
         scoreText.fill = '#fff';
@@ -24,7 +24,7 @@ var gameState = function(){
 
         levelText = game.add.text(scaleToPixelRatio(800), scaleToPixelRatio(500), 'Avoid the bombardment, hit the stars to get the perfect content.'+round);
         levelText.anchor.setTo(0.5);
-        levelText.font = 'Nunito';
+        levelText.font = utils.FONT1;
         levelText.fontSize = scaleToPixelRatio(30);
         levelText.align = 'center';
         levelText.fill = '#fff';

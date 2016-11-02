@@ -24,8 +24,8 @@ Menu.prototype = {
 
 	init: function () {
     this.titleText = game.make.text(game.world.centerX, 100, "Content Bombardment", {
-      font: 'bold 60pt TheMinion',
-      fill: '#FDFFB5',
+      font: 'bold 60pt '+utils.FONT1,
+      fill: utils.TEXTCOLOR1,
       align: 'center'
     });
     this.titleText.setShadow(3, 3, 'rgba(0,0,0,0.5)', 5);
