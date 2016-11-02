@@ -1,6 +1,6 @@
 var gameState = function(){
     var that = {};
-    that.MAX_LEVELS = 1;
+    that.MAX_LEVELS = 6;
     var score = 0;
     var scoreText, levelText;
     var wordsCollected = 0;
@@ -22,7 +22,7 @@ var gameState = function(){
         scoreText.fill = '#fff';
         scoreText.strokeThickness = 1;
 
-        levelText = game.add.text(scaleToPixelRatio(800), scaleToPixelRatio(500), 'Avoid the bombardment, hit the stars to get the perfect content.'+round);
+        levelText = game.add.text(scaleToPixelRatio(800), scaleToPixelRatio(500), 'Avoid the bombardment, shoot the stars to get the perfect content.'+round);
         levelText.anchor.setTo(0.5);
         levelText.font = utils.FONT1;
         levelText.fontSize = scaleToPixelRatio(30);
@@ -97,7 +97,7 @@ var gameState = function(){
         }, this);
 
         if(round === 1){
-            levelText.text = 'Avoid the bombardment\n hit the stars to get the perfect content.';
+            levelText.text = 'Avoid the bombardment\n fire at the stars to get the perfect content.\n\n Press spacebar to fire and use the cursor keys to fly the ship';
         }else {
             levelText.text = 'LEVEL:' + round;
         }

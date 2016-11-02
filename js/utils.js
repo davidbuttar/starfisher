@@ -136,6 +136,6 @@ var utils = (function(){
         centerGameObjects: centerGameObjects,
         addMenuOption: addMenuOption,
         FONT1: 'TheMinion',
-        TEXTCOLOR1: '#70F8FF'
+        TEXTCOLOR1: '#6CEEF5'
     };
 })();

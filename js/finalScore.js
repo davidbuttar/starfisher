@@ -9,7 +9,7 @@ var FinalScore = function() {
     that.init = function (gameDataIn) {
 
         gameData = gameDataIn;
-        that.titleText = game.make.text(game.world.centerX, 80, "Final Score: "+gameData.score);
+        that.titleText = game.make.text(game.world.centerX, 80, "You did it! Final Score: "+gameData.score);
         that.titleText.anchor.setTo(0.5);
         that.titleText.font = utils.FONT1;
         that.titleText.fontSize = 50;
@@ -18,7 +18,7 @@ var FinalScore = function() {
         that.titleText.strokeThickness = 1;
         that.titleText.setShadow(-4, 4, 'rgba(0,0,0,0.8)', 0);
 
-        that.summaryText = game.make.text(game.world.centerX, 160, 'Congratulations you targeted '+gameData.subject+' with these ' +
+        that.summaryText = game.make.text(game.world.centerX, 160, 'You targeted '+gameData.subject+' with these ' +
             gameData.words.length+' words');
         that.summaryText.anchor.setTo(0.5);
         that.summaryText.font = utils.FONT1;
@@ -49,6 +49,9 @@ var FinalScore = function() {
         backToMenu.anchor.setTo(0.5);
         backToMenu.fontSize = 38;
         backToMenu.inputEnabled = true;
+
+        backToMenu.alpha = 0;
+        game.add.tween(backToMenu).to( { alpha: 1 }, 500, Phaser.Easing.Linear.None, true, 0, 250, true);
 
         backToMenu.events.onInputUp.add(function(){
             game.state.start('Menu');

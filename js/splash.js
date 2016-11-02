@@ -20,7 +20,7 @@ Splash = function (game) {
     
     that.loadImages = function () {
 
-        game.load.image('bullet', 'assets/blast.png');
+        game.load.image('bullet', 'assets/blast2.png');
         game.load.image('rocket', 'assets/Rocket3.png');
         game.load.image('bubble', 'assets/Star2.png');
         game.load.image('asteroid', 'assets/asteroid.png');

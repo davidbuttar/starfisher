@@ -103,6 +103,7 @@ var Main = function (game) {
 
         if(gameStateInstance.gameComplete()){
             that.gameOver();
+            return;
         }
         gameStateInstance.nextRound();
 
@@ -119,7 +120,7 @@ var Main = function (game) {
         body1.sprite.lifespan = 1;
         if(body2.sprite.key === 'bubble') {
             body2.hits++;
-            if (body2.hits === 6) {
+            if (body2.hits === 4) {
                 gameStateInstance.wordCollected(body2.sprite.wordRef.text);
                 wordBubblesInstance.removeBubble(body2, function(){
                     if(gameStateInstance.roundOver()){
@@ -165,11 +166,14 @@ var Main = function (game) {
     };
 
     that.gameOver = function () {
-        game.state.start('FinalScore', true, false, {
-            score:gameStateInstance.getScore(),
-            words:gameStateInstance.getWordsCollection(),
-            email:userInput.email,
-            subject:userInput.subject
+        game.time.events.add(2000, function(){
+            game.state.start('FinalScore', true, false, {
+                score:gameStateInstance.getScore(),
+                words:gameStateInstance.getWordsCollection(),
+                email:userInput.email,
+                subject:userInput.subject
+            });
+            gameStateInstance.nextRound();
         });
     };
 
