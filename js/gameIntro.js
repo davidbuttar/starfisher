@@ -35,6 +35,8 @@ GameIntro.prototype = {
       borderRadius: 6
     });
 
+    this.emailInput.focus = true;
+
     this.contentText = game.make.text(game.world.centerX, 450, "Content", {
       font: 'bold 30pt TheMinion',
       fill: '#FDFFB5',
