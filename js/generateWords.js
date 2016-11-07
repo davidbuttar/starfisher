@@ -18,6 +18,19 @@ var generateWords = function(){
         {'count':16,'terms':[{'score':49.6608149797635,'term':'Unilever'},{'score':38.7246666828755,'term':'Marmite'},{'score':33.6843342551169,'term':'customer'},{'score':28.6793087822098,'term':'Brexit'},{'score':27.8860983500349,'term':'dispute'},{'score':27.0672687527419,'term':'Jerry’s'},{'score':26.1159417471511,'term':'Supermarket'},{'score':23.9632721889295,'term':'Hellman’s'},{'score':23.9070272171753,'term':'Ben'},{'score':22.2258165561148,'term':'Metcalfe'},{'score':21.452572706065,'term':'LikeToDiscover'},{'score':21.277805362907,'term':'Sainsbury’s'},{'score':20.4557037790551,'term':'supplier'},{'score':20.4208276302832,'term':'Worm'},{'score':19.6007509518774,'term':'Wes'},{'score':19.46229354864,'term':'cucumber'}]}
     ];
 
+    /**
+     * Randomize array element order in-place.
+     * Using Durstenfeld shuffle algorithm.
+     */
+    function shuffleArray(array) {
+        for (var i = array.length - 1; i > 0; i--) {
+            var j = Math.floor(Math.random() * (i + 1));
+            var temp = array[i];
+            array[i] = array[j];
+            array[j] = temp;
+        }
+        return array;
+    }
 
     /**
      * Mix words up, mark which size bucket they should be in and return a fixed number of them.
@@ -34,7 +47,7 @@ var generateWords = function(){
                 word.bucket = 3;
             }
         });
-        return words;
+        return shuffleArray(words);
     }
 
     /**

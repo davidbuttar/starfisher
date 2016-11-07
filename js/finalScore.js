@@ -65,13 +65,13 @@ var FinalScore = function() {
 
         gameData.words.forEach(function(word){
             var star = game.add.sprite(250*column + leftOffset, topOffset, 'bubble');
-            var text = game.add.text(star.width/2, star.height/2 + 18, word);
+            var text = game.add.text(star.width/2, star.height/2 + 10, word);
             text.font = 'Nunito';
-            text.fontSize = 52;
+            text.fontSize = 20;
             text.align = 'left';
             text.fill = '#222';
             text.rotation = Phaser.Math.degToRad(-45);
-            text.strokeThickness = 1;
+            text.strokeThickness = 0;
             star.addChild(text);
             text.anchor.setTo(0.5);
 
