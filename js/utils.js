@@ -70,13 +70,14 @@ var utils = (function(){
         game.cache._cache.physics[originalPhysicsKey].data[shapeKey].forEach(function (shapes) {
             var shapeArray = [];
             shapes.shape.forEach(function (values) {
-                shapeArray.push(values * scale);
+                shapeArray.push(Math.round(values * scale));
             });
             newData.push({shape: shapeArray});
 
         });
         var item = {};
         item[shapeKey] = newData;
+        console.log(JSON.stringify(newData));
         game.load.physics(newPhysicsKey, '', item);
     }
 

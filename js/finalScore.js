@@ -74,7 +74,6 @@ var FinalScore = function() {
             text.strokeThickness = 1;
             star.addChild(text);
             text.anchor.setTo(0.5);
-            star.scale.set(0.35);
 
             if(column === 5){
                 topOffset += 250;

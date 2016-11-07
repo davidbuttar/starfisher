@@ -10,6 +10,8 @@ var Main = function (game) {
     var asteroidsInstance = asteroids(gameStateInstance);
     var starField;
     var userInput;
+    var tooCloseCount = 0;
+    var requiredHits = 4;
 
     function fireBullet() {
         if (game.time.now > bulletTime) {
@@ -65,7 +67,7 @@ var Main = function (game) {
         game.physics.p2.enable(rocket);
         rocket.body.mass = 0.5;
         rocket.body.setCollisionGroup(shipCollisionGroup);
-        rocket.body.collides([wordCollisionGroup, asteroidCollisionGroup]);
+        rocket.body.collides([wordCollisionGroup, asteroidCollisionGroup], hitRocket);
 
         gameStateInstance.create();
 
@@ -77,7 +79,7 @@ var Main = function (game) {
         for (var i = 0; i < 10; i++) {
             var bullet = bullets.create(0, 0, 'bullet');
             bullet.scale.set(scaleToPixelRatio(0.5));
-            game.physics.p2.enable(bullet,false);
+            game.physics.p2.enable(bullet);
             bullet.body.mass = 0.1;
             bullet.body.setCollisionGroup(bulletCollisionGroup);
             bullet.body.collides([wordCollisionGroup, asteroidCollisionGroup], hitWord);
@@ -130,6 +132,24 @@ var Main = function (game) {
                 });
             }
         }
+    }
+
+    /**
+     * Check if the rockey is less than 15 pixels away 10 times in a row if it is move it
+     * @param body1
+     * @param body2
+     */
+    function hitRocket(body1, body2){
+        var distance = game.math.distance(body1.sprite.x, body1.sprite.y, body2.sprite.x, body2.sprite.y);
+        if(distance < 40){
+            tooCloseCount++;
+        }else{
+            tooCloseCount = 0;
+        }
+        if(tooCloseCount === 40){
+            body1.x = body1.x+200;
+            body1.y = body1.y+200;
+        }
 
     }
 
@@ -178,7 +198,7 @@ var Main = function (game) {
     };
 
     that.render = function(){
-        //game.debug.text(game.time.fps, 2, 24, "#00ff00");
+        game.debug.text(game.time.fps, 2, 24, "#00ff00");
     };
 
     return that;

@@ -1,6 +1,8 @@
 var gameState = function(){
     var that = {};
-    that.MAX_LEVELS = 6;
+    that.MAX_LEVELS = 3;
+    that.MAX_WORDS = 8;
+    that.WORDS_LIMIT = 4;
     var score = 0;
     var scoreText, levelText;
     var wordsCollected = 0;
@@ -53,7 +55,7 @@ var gameState = function(){
      * Called when a word has been collected.
      */
     that.wordCollected = function(word){
-        if(wordsCollectedThisRound !== 3) {
+        if(wordsCollectedThisRound !== that.MAX_WORDS) {
             wordsCollectedThisRound++;
             wordsCollection.push(word);
             that.incrementScore();
@@ -65,7 +67,7 @@ var gameState = function(){
      * @returns {boolean}
      */
     that.roundOver = function(){
-        return wordsCollectedThisRound === 3;
+        return wordsCollectedThisRound === that.MAX_WORDS;
     };
 
     that.getLevel = function(){
@@ -99,7 +101,7 @@ var gameState = function(){
         if(round === 1){
             levelText.text = 'Avoid the bombardment\n fire at the stars to get the perfect content.\n\n Press spacebar to fire and use the cursor keys to fly the ship';
         }else {
-            levelText.text = 'LEVEL:' + round;
+            levelText.text = 'PERSONA:' + round;
         }
 
     }

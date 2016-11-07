@@ -4,6 +4,8 @@ var wordBubbles = function(gameStateInst){
     var generateWordsInstance = generateWords();
     var wordScale = 0.35;
     var wordAdded = 0;
+    var words;
+    var lastIndex = 0;
 
     var startingPositions = [
         {
@@ -23,19 +25,35 @@ var wordBubbles = function(gameStateInst){
             y:scaleToPixelRatio(1000),
             vx:scaleToPixelRatio(-100),
             vy:scaleToPixelRatio(-100)
+        },
+        {
+            x:scaleToPixelRatio(100),
+            y:scaleToPixelRatio(1000),
+            vx:scaleToPixelRatio(100),
+            vy:scaleToPixelRatio(-100)
         }
     ];
+
+    var scales ={
+        'bucket1':0.5,
+        'bucket2':0.8,
+        'bucket3':1
+    };
 
     /**
      * Create all our words for the first time.
      */
     that.create = function(collisionGroups){
+        utils.resizePolygon('physicsData', 'physicsData1', 'Star', scales.bucket1);
+        utils.resizePolygon('physicsData', 'physicsData2', 'Star', scales.bucket2);
+        utils.resizePolygon('physicsData', 'physicsData3', 'Star', scales.bucket3);
         wordAdded = 0;
         bubbles = [];
         var words = generateWordsInstance.get(1);
-        words.forEach(function (word) {
-            that.add(word, collisionGroups);
-        });
+        for(var i = 0; i<8; i++) {
+            that.add(words[i], collisionGroups);
+        }
+
     };
 
     /**
@@ -46,14 +64,13 @@ var wordBubbles = function(gameStateInst){
     that.add = function(word, collisionGroups){
         var wordBubble = {};
 
-        utils.resizePolygon('physicsData', 'physicsData2', 'Star', scaleToPixelRatio(wordScale));
         //  Create our ship sprite
         var bubble = game.add.sprite(-100, -100, 'bubble');
-        bubble.scale.set(wordScale);
+        bubble.scale.set(scales['bucket'+word.bucket]);
 
         game.physics.p2.enable(bubble);
         bubble.body.clearShapes();
-        bubble.body.loadPolygon('physicsData2', 'Star');
+        bubble.body.loadPolygon('physicsData'+word.bucket, 'Star');
         bubble.body.setCollisionGroup(collisionGroups[0]);
         bubble.body.collides(collisionGroups);
 
@@ -61,18 +78,19 @@ var wordBubbles = function(gameStateInst){
         bubble.body.hits = 0;
         bubble.kill();
 
-        var text = game.add.text(0, 24, word.term);
+        var text = game.add.text(0, 10, word.term);
         text.anchor.setTo(0.5);
         text.font = 'Nunito';
-        text.fontSize = 52;
+        text.fontSize = 20;
         text.align = 'left';
         text.fill = '#222';
         text.rotation = Phaser.Math.degToRad(-45);
-        text.strokeThickness = 1;
+        text.strokeThickness = 0;
 
         bubble.addChild(text);
 
         bubble.wordRef = text;
+        bubble.scaleRef = scales['bucket'+word.bucket];
         //wordBubble.text = text;
         wordBubble.bubble = bubble;
 
@@ -86,21 +104,44 @@ var wordBubbles = function(gameStateInst){
      */
     that.newCycle = function(){
         wordAdded = 0;
-        var words = generateWordsInstance.get(gameStateInst.getLevel());
-        bubbles.forEach(function(bubble, index){
-            bubble.bubble.wordRef.text = words[index].term;
-            bubble.bubble.body.hits = 0;
-            bubble.bubble.body.x = startingPositions[wordAdded].x;
-            bubble.bubble.body.y = startingPositions[wordAdded].y;
-            bubble.bubble.body.angularVelocity = 0;
-            bubble.bubble.body.rotation = Phaser.Math.degToRad(0);
-            bubble.bubble.body.velocity.x= startingPositions[wordAdded].vx;
-            bubble.bubble.body.velocity.y= startingPositions[wordAdded].vy;
-            that.animateIn(bubble.bubble);
-            bubble.bubble.revive();
-            wordAdded++;
-        });
+        words = generateWordsInstance.get(gameStateInst.getLevel());
+        for(var i = 0; i<gameStateInst.WORDS_LIMIT; i++){
+            reviveWord(bubbles[i].bubble, i);
+        }
+        lastIndex = 3;
     };
+
+    /**
+     *
+     * @param bubble
+     * @param index
+     */
+    function reviveWord(bubble, index){
+        bubble.wordRef.text = words[index].term;
+        bubble.body.hits = 0;
+        bubble.body.x = startingPositions[wordAdded].x;
+        bubble.body.y = startingPositions[wordAdded].y;
+        bubble.body.angularVelocity = 0;
+        bubble.body.rotation = Phaser.Math.degToRad(0);
+        bubble.body.velocity.x= startingPositions[wordAdded].vx;
+        bubble.body.velocity.y= startingPositions[wordAdded].vy;
+        that.animateIn(bubble);
+        bubble.revive();
+        wordAdded++;
+        if(wordAdded === startingPositions.length){
+            wordAdded = 0;
+        }
+    }
+
+    /**
+     * Form closure round index value.
+     * @param index
+     */
+    function reviveIndex(index){
+        return function(){
+            reviveWord(bubbles[index].bubble, index);
+        }
+    }
 
     /**
      * Set a bubble for removal.
@@ -112,6 +153,11 @@ var wordBubbles = function(gameStateInst){
         game.add.tween(bubble.sprite).to({ alpha: 0 }, 800, Phaser.Easing.Bounce.InOut, true, 0);
         var tween2 = game.add.tween(bubble.sprite.scale).to({ x: 0.0, y:0.0 }, 800, Phaser.Easing.Back.InOut, true, 0);
         tween2.onComplete.add( callback, this);
+        lastIndex++;
+        if(lastIndex < gameStateInst.MAX_WORDS){
+            game.time.events.add(4000, reviveIndex(lastIndex));
+
+        }
     };
 
     /**
@@ -119,10 +165,11 @@ var wordBubbles = function(gameStateInst){
      * @param bubble
      */
     that.animateIn = function(bubble){
+        var initalScale = bubble.scaleRef;
         bubble.scale.x = 0.1;
         bubble.scale.y = 0.1;
         bubble.alpha = 1;
-        game.add.tween(bubble.scale).to({ x: scaleToPixelRatio(wordScale), y:scaleToPixelRatio(wordScale) }, 800, Phaser.Easing.Back.Out, true, 0);
+        game.add.tween(bubble.scale).to({ x:initalScale, y:initalScale}, 800, Phaser.Easing.Back.Out, true, 0);
     };
 
     /**

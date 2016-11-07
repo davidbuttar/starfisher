@@ -2,7 +2,7 @@ var asteroids = function(curGameState){
     var that = {};
     var asteroidList = [];
     var wordAdded = 0;
-    var scale = 0.35;
+    var scale = 1;
     var generateWordsInstance = generateWords();
 
     var startingPositions = [
@@ -48,16 +48,15 @@ var asteroids = function(curGameState){
     that.add = function(word, collisionGroups){
 
         var asteroidObj = {};
-        utils.resizePolygon('physicsData', 'physicsData3', 'asteroid', scaleToPixelRatio(scale));
+        //utils.resizePolygon('physicsData', 'physicsData3', 'asteroid', scaleToPixelRatio(1));
 
         //  Create our ship sprite
         var asteroid = game.add.sprite(-200, -200, 'asteroid');
         asteroid.scale.set(scaleToPixelRatio(scale));
 
         game.physics.p2.enable(asteroid);
-        console.log(asteroid.body);
         asteroid.body.clearShapes();
-        asteroid.body.loadPolygon('physicsData3', 'asteroid');
+        asteroid.body.loadPolygon('physicsData', 'asteroid');
         asteroid.body.setCollisionGroup(collisionGroups[0]);
         asteroid.body.collides(collisionGroups);
 
@@ -66,18 +65,15 @@ var asteroids = function(curGameState){
 
         // Using this to record how many hits on our objects from laser blasts.
         asteroid.body.hits = 0;
-
         asteroid.lifespan = 1;
 
         var text = game.add.text(0, 0, word.term);
         text.anchor.setTo(0.5);
         text.font = 'Nunito';
-        text.fontSize = 54;
+        text.fontSize = 20;
         text.align = 'left';
-        text.fill = '#fff';
-        text.strokeThickness = 1;
-        text.setShadow(-4, 4, 'rgba(0,0,0,0.8)', 0);
-
+        text.fill = '#000';
+        text.strokeThickness = 0;
         asteroid.addChild(text);
 
         asteroidObj.text = text;
@@ -103,7 +99,6 @@ var asteroids = function(curGameState){
     that.newCycle = function(){
         wordAdded = 0;
         asteroidList.forEach(function(asteroid){
-            console.log(asteroid.bubble);
             asteroid.bubble.body.hits = 0;
             asteroid.bubble.body.x = startingPositions[wordAdded].x;
             asteroid.bubble.body.y = startingPositions[wordAdded].y;
@@ -154,7 +149,7 @@ var asteroids = function(curGameState){
         asteroidList.forEach(function(asteroid){
             if(asteroid.bubble && asteroid.bubble.exists){
                 utils.screenWrap(asteroid.bubble.body);
-                utils.accelerateToObject(asteroid.bubble, rocket, 400*curGameState.getLevel());
+                utils.accelerateToObject(asteroid.bubble, rocket, 600*curGameState.getLevel());
                 utils.constrainVelocity(asteroid.bubble, 90);
             }
         });
