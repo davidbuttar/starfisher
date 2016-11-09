@@ -2,10 +2,10 @@ var wordBubbles = function(gameStateInst){
     var that = {};
     var bubbles = [];
     var generateWordsInstance = generateWords();
-    var wordScale = 0.35;
     var wordAdded = 0;
     var words;
     var lastIndex = 0;
+    var reviveTimer = [];
 
     var startingPositions = [
         {
@@ -22,21 +22,21 @@ var wordBubbles = function(gameStateInst){
         },
         {
             x:scaleToPixelRatio(1530),
-            y:scaleToPixelRatio(1000),
+            y:scaleToPixelRatio(880),
             vx:scaleToPixelRatio(-100),
             vy:scaleToPixelRatio(-100)
         },
         {
             x:scaleToPixelRatio(100),
-            y:scaleToPixelRatio(1000),
+            y:scaleToPixelRatio(880),
             vx:scaleToPixelRatio(100),
             vy:scaleToPixelRatio(-100)
         }
     ];
 
     var scales ={
-        'bucket1':0.5,
-        'bucket2':0.8,
+        'bucket1':0.8,
+        'bucket2':0.9,
         'bucket3':1
     };
 
@@ -104,6 +104,7 @@ var wordBubbles = function(gameStateInst){
      */
     that.newCycle = function(){
         wordAdded = 0;
+        reviveTimer = [];
         words = generateWordsInstance.get(gameStateInst.getLevel());
         for(var i = 0; i<gameStateInst.WORDS_LIMIT; i++){
             reviveWord(bubbles[i].bubble, i);
@@ -155,8 +156,7 @@ var wordBubbles = function(gameStateInst){
         tween2.onComplete.add( callback, this);
         lastIndex++;
         if(lastIndex < gameStateInst.MAX_WORDS){
-            game.time.events.add(4000, reviveIndex(lastIndex));
-
+            reviveTimer.push(game.time.events.add(4000, reviveIndex(lastIndex)));
         }
     };
 
@@ -170,6 +170,31 @@ var wordBubbles = function(gameStateInst){
         bubble.scale.y = 0.1;
         bubble.alpha = 1;
         game.add.tween(bubble.scale).to({ x:initalScale, y:initalScale}, 800, Phaser.Easing.Back.Out, true, 0);
+    };
+
+
+    /**
+     * Use tweens to give bubbles an interesting entrance.
+     * @param bubble
+     */
+    that.animateOut = function(bubble){
+        bubble.body.removeNextStep = true;
+        game.add.tween(bubble).to({ alpha: 0 }, 400, Phaser.Easing.Bounce.Out, true, 0);
+        game.add.tween(bubble.scale).to({ x: 0.1, y:0.1 }, 400, Phaser.Easing.Back.Out, true, 0);
+    };
+
+    /**
+     * End of level remove remaining asteroids
+     */
+    that.roundOver = function(){
+        bubbles.forEach(function(bubble){
+            that.animateOut(bubble.bubble);
+        });
+        if(reviveTimer.length){
+            reviveTimer.forEach(function(timer){
+                game.time.events.remove(timer);
+            });
+        }
     };
 
     /**

@@ -5,7 +5,7 @@ var Main = function (game) {
     var rocket;
     var bullet;
     var bulletTime = 0;
-    var gameStateInstance = gameState();
+    var gameStateInstance = gameState(that);
     var wordBubblesInstance = wordBubbles(gameStateInstance);
     var asteroidsInstance = asteroids(gameStateInstance);
     var starField;
@@ -18,7 +18,7 @@ var Main = function (game) {
             bullet = bullets.getFirstExists(false);
             var rocketRadius = rocket.height / 2 + scaleToPixelRatio(15);
             if (bullet) {
-                bullet.reset(rocket.x + rocketRadius * Math.cos(rocket.rotation - Phaser.Math.degToRad(90)),
+                bullet.showEndSummary(rocket.x + rocketRadius * Math.cos(rocket.rotation - Phaser.Math.degToRad(90)),
                     rocket.y + rocketRadius * Math.sin(rocket.rotation - Phaser.Math.degToRad(90)));
                 bullet.lifespan = 1000;
                 bullet.body.velocity.x = rocket.body.velocity.x;
@@ -94,21 +94,27 @@ var Main = function (game) {
         cursors = game.input.keyboard.createCursorKeys();
         game.input.keyboard.addKeyCapture([Phaser.Keyboard.SPACEBAR]);
 
-        nextRound();
-
+        gameStateInstance.showStartMessages();
     };
 
     /**
      * Start the lastest round.
      */
-    function nextRound(){
+    function startLevel(){
 
         if(gameStateInstance.gameComplete()){
             that.gameOver();
             return;
         }
-        gameStateInstance.nextRound();
 
+        gameStateInstance.startLevel();
+
+    }
+
+    /**
+     * Add the roids and words for the start of the next level
+     */
+    that.startLevel = function(){
         game.time.events.add(2000, function(){
             asteroidsInstance.newCycle();
         }, this);
@@ -116,19 +122,24 @@ var Main = function (game) {
         game.time.events.add(3200, function(){
             wordBubblesInstance.newCycle();
         }, this);
-    }
+    };
+
+    /**
+     * End the current level
+     */
+    that.endLevel = function(){
+        asteroidsInstance.roundOver();
+        wordBubblesInstance.roundOver();
+    };
 
     function hitWord(body1, body2){
         body1.sprite.lifespan = 1;
         if(body2.sprite.key === 'bubble') {
             body2.hits++;
-            if (body2.hits === 4) {
+            if (body2.hits === requiredHits) {
                 gameStateInstance.wordCollected(body2.sprite.wordRef.text);
                 wordBubblesInstance.removeBubble(body2, function(){
-                    if(gameStateInstance.roundOver()){
-                        asteroidsInstance.roundOver();
-                        nextRound();
-                    }
+                    gameStateInstance.checkLevelOver();
                 });
             }
         }
@@ -140,6 +151,10 @@ var Main = function (game) {
      * @param body2
      */
     function hitRocket(body1, body2){
+        if(body2.sprite.key === 'asteroid'){
+            gameStateInstance.registerRocketHit();
+        }
+
         var distance = game.math.distance(body1.sprite.x, body1.sprite.y, body2.sprite.x, body2.sprite.y);
         if(distance < 40){
             tooCloseCount++;
@@ -178,7 +193,7 @@ var Main = function (game) {
         asteroidsInstance.update(rocket);
         utils.constrainVelocity(rocket,55);
         utils.screenWrap(rocket.body);
-
+        gameStateInstance.updateTime();
     };
 
     that.postUpdate = function () {
@@ -193,7 +208,7 @@ var Main = function (game) {
                 email:userInput.email,
                 subject:userInput.subject
             });
-            gameStateInstance.nextRound();
+            gameStateInstance.reset();
         });
     };
 
