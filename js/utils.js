@@ -41,6 +41,24 @@ var utils = (function(){
     }
 
     /**
+     * Apply common styles.
+     * @param text
+     * @param size
+     * @param transparent
+     */
+    function applyCommonStyle(text, size, transparent){
+        text.anchor.setTo(0.5);
+        text.font = utils.FONT1;
+        text.fontSize = scaleToPixelRatio(size);
+        text.align = 'center';
+        text.fill = '#fff';
+        text.strokeThickness = 1;
+        if(transparent){
+            text.alpha = 0;
+        }
+    }
+
+    /**
      * Accelerate to object.
      *
      * @param obj1
@@ -136,8 +154,9 @@ var utils = (function(){
         accelerateToObject: accelerateToObject,
         centerGameObjects: centerGameObjects,
         addMenuOption: addMenuOption,
+        applyCommonStyle:applyCommonStyle,
         FONT1: 'TheMinion',
         TEXTCOLOR1: '#6CEEF5',
-        SKIP_EMAIL:true
+        SKIP_EMAIL:false
     };
 })();

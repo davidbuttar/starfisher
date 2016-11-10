@@ -9,9 +9,10 @@ var Main = function (game) {
     var wordBubblesInstance = wordBubbles(gameStateInstance);
     var asteroidsInstance = asteroids(gameStateInstance);
     var starField;
-    var userInput;
     var tooCloseCount = 0;
     var requiredHits = 4;
+
+    that.userInput;
 
     function fireBullet() {
         if (game.time.now > bulletTime) {
@@ -35,7 +36,7 @@ var Main = function (game) {
      * @param data
      */
     that.init = function(data){
-        userInput = data;
+        that.userInput = data;
     };
 
     that.create = function () {
@@ -205,8 +206,8 @@ var Main = function (game) {
             game.state.start('FinalScore', true, false, {
                 score:gameStateInstance.getScore(),
                 words:gameStateInstance.getWordsCollection(),
-                email:userInput.email,
-                subject:userInput.subject
+                email:that.userInput.email,
+                subject:that.userInput.subject
             });
             gameStateInstance.reset();
         });

@@ -42,14 +42,14 @@ Leaderboard.prototype = {
       var name = nameExtract ? nameExtract : 'ghost player';
 
       var style = {
-          font: '30pt '+utils.FONT1,
+          font: '25pt '+utils.FONT1,
           srokeThickness: 4,
           align: 'left',
           fill: 'white'
         };
 
       var txt = game.add.text(game.world.centerX,
-        (leadersCount * 80) + 200,
+        (leadersCount * 60) + 200,
         (name + ': ' + item.score),
         style 
         );

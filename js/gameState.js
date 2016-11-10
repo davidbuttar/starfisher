@@ -56,7 +56,7 @@ var gameState = function(main){
         outOfTime = game.add.text(scaleToPixelRatio(game.world.centerX), scaleToPixelRatio(game.world.centerY), 'Level Complete');
         applyCommonStyle(outOfTime, 24, true);
 
-        personasCaptured = game.add.text(scaleToPixelRatio(game.world.centerX), scaleToPixelRatio(start+100), 'Persona Captured');
+        personasCaptured = game.add.text(scaleToPixelRatio(game.world.centerX), scaleToPixelRatio(start+100), 'Your words');
         applyCommonStyle(personasCaptured, 24, true);
 
         captured = game.add.text(scaleToPixelRatio(game.world.centerX), scaleToPixelRatio(start+200), '');
@@ -74,7 +74,7 @@ var gameState = function(main){
      * Show the end of level summary.
      */
     that.showSummary = function(){
-        var firstMessage = timesUp ? 'Times up, Level Complete' : 'Level Complete';
+        var firstMessage = timesUp ? 'Times up, Persona Captured' : 'Persona Captured';
         outOfTime.text = firstMessage;
         captured.text = curwordsCollection.join(', ');
         avoidBonus.text = 'Dodge Bonus: '+curAvoidScore;
@@ -221,7 +221,7 @@ var gameState = function(main){
         if(round === 1){
             levelText.text = 'Avoid the bombardment\n fire at the stars to get the perfect content.\n\n Press spacebar to fire and use the cursor keys to fly the ship';
         }else {
-            levelText.text = 'PERSONA:' + round;
+            levelText.text = 'Incoming grapeshot PERSONA for ' + mainGame.userInput.subject+ '...';
         }
     }
 

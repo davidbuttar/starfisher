@@ -37,7 +37,7 @@ var FinalScore = function() {
         game.add.existing(that.summaryText);
         that.spacebarKey.onDown.add(goBack, this);
 
-        var backToMenu = game.add.text(game.world.centerX, 1040,
+        var backToMenu = game.add.text(game.world.centerX, game.world.height - 20,
             'Hit Spacebar to Continue',
             {
                 font: utils.FONT1,
@@ -58,31 +58,10 @@ var FinalScore = function() {
         });
 
         // Add our collected words
-
-        var leftOffset = 100;
-        var topOffset = 250;
-        var column = 0;
-
-        gameData.words.forEach(function(word){
-            var star = game.add.sprite(250*column + leftOffset, topOffset, 'bubble');
-            var text = game.add.text(star.width/2, star.height/2 + 10, word);
-            text.font = 'Nunito';
-            text.fontSize = 20;
-            text.align = 'left';
-            text.fill = '#222';
-            text.rotation = Phaser.Math.degToRad(-45);
-            text.strokeThickness = 0;
-            star.addChild(text);
-            text.anchor.setTo(0.5);
-
-            if(column === 5){
-                topOffset += 250;
-                column = 0;
-            }else{
-                column++;
-            }
-
-        });
+        var captured = game.add.text(scaleToPixelRatio(game.world.centerX), scaleToPixelRatio(350), gameData.words.join(', '));
+        utils.applyCommonStyle(captured, 30);
+        captured.wordWrap = true;
+        captured.wordWrapWidth = 900;
 
     };
 
