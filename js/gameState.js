@@ -9,7 +9,7 @@ var gameState = function(main){
     var round = 0;
     var wordsCollectedThisRound = 0;
     var wordsCollection = [];
-    var curwordsCollection = [];
+    var curWordsCollection = [];
     var rocketHits = 0;
     var rocketHitTimer = false;
     var timer;
@@ -76,7 +76,7 @@ var gameState = function(main){
     that.showSummary = function(){
         var firstMessage = timesUp ? 'Times up, Persona Captured' : 'Persona Captured';
         outOfTime.text = firstMessage;
-        captured.text = curwordsCollection.join(', ');
+        captured.text = curWordsCollection.join(', ');
         avoidBonus.text = 'Dodge Bonus: '+curAvoidScore;
         timeBonus.text = 'Time Bonus: '+curTimeScore;
         var inTween = game.add.tween(outOfTime).to({ alpha: 1}, 800, Phaser.Easing.Back.In, true);
@@ -116,7 +116,7 @@ var gameState = function(main){
         rocketHits = 0;
         round = 0;
         wordsCollection = [];
-        curwordsCollection = [];
+        curWordsCollection = [];
     };
 
     /**
@@ -132,8 +132,8 @@ var gameState = function(main){
     that.wordCollected = function(word){
         if(wordsCollectedThisRound !== that.MAX_WORDS) {
             wordsCollectedThisRound++;
-            wordsCollection.push(word);
-            curwordsCollection.push(word);
+            //wordsCollection.push(word);
+            curWordsCollection.push(word);
             that.incrementScore();
         }
     };
@@ -167,6 +167,7 @@ var gameState = function(main){
         mainGame.endLevel();
         applyScoreBonus();
         timer.destroy();
+        wordsCollection.push(curWordsCollection);
         that.showSummary();
     };
 
@@ -176,7 +177,7 @@ var gameState = function(main){
     that.startLevel = function(){
         rocketHits = 0;
         wordsCollectedThisRound = 0;
-        curwordsCollection = [];
+        curWordsCollection = [];
         mainGame.startLevel();
         timesUp = false;
         currentState = 'startLevel';

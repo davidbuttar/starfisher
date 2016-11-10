@@ -18,8 +18,7 @@ var FinalScore = function() {
         that.titleText.strokeThickness = 1;
         that.titleText.setShadow(-4, 4, 'rgba(0,0,0,0.8)', 0);
 
-        that.summaryText = game.make.text(game.world.centerX, 160, 'You targeted '+gameData.subject+' with these ' +
-            gameData.words.length+' words');
+        that.summaryText = game.make.text(game.world.centerX, 160, 'You targeted '+gameData.subject+' with these 3 personas');
         that.summaryText.anchor.setTo(0.5);
         that.summaryText.font = utils.FONT1;
         that.summaryText.fontSize = 38;
@@ -58,10 +57,22 @@ var FinalScore = function() {
         });
 
         // Add our collected words
-        var captured = game.add.text(scaleToPixelRatio(game.world.centerX), scaleToPixelRatio(350), gameData.words.join(', '));
-        utils.applyCommonStyle(captured, 30);
-        captured.wordWrap = true;
-        captured.wordWrapWidth = 900;
+        var captured1 = game.add.text(scaleToPixelRatio(game.world.centerX), scaleToPixelRatio(350), gameData.words[0].join(', '));
+        utils.applyCommonStyle(captured1, 30);
+        captured1.wordWrap = true;
+        captured1.wordWrapWidth = 900;
+
+        // Add our collected words
+        var captured2 = game.add.text(scaleToPixelRatio(game.world.centerX), scaleToPixelRatio(450), gameData.words[1].join(', '));
+        utils.applyCommonStyle(captured2, 30);
+        captured2.wordWrap = true;
+        captured2.wordWrapWidth = 900;
+
+        // Add our collected words
+        var captured3 = game.add.text(scaleToPixelRatio(game.world.centerX), scaleToPixelRatio(550), gameData.words[2].join(', '));
+        utils.applyCommonStyle(captured3, 30);
+        captured3.wordWrap = true;
+        captured3.wordWrapWidth = 900;
 
     };
 

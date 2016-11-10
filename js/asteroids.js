@@ -20,7 +20,7 @@ var asteroids = function(curGameState){
         },
         {
             x:scaleToPixelRatio(1430),
-            y:scaleToPixelRatio(1000),
+            y:scaleToPixelRatio(880),
             vx:scaleToPixelRatio(-150),
             vy:scaleToPixelRatio(-100)
         }

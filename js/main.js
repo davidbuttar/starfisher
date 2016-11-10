@@ -157,7 +157,8 @@ var Main = function (game) {
         }
 
         var distance = game.math.distance(body1.sprite.x, body1.sprite.y, body2.sprite.x, body2.sprite.y);
-        if(distance < 40){
+
+        if(distance < 75){
             tooCloseCount++;
         }else{
             tooCloseCount = 0;
