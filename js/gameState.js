@@ -58,16 +58,16 @@ var gameState = function(main){
         applyCommonStyle(outOfTime, 24, true);
 
         personasCaptured = game.add.text(scaleToPixelRatio(game.world.centerX), scaleToPixelRatio(start+100), 'Your words');
-        applyCommonStyle(personasCaptured, 24, true);
+        applyCommonStyle(personasCaptured, 25, true);
 
         captured = game.add.text(scaleToPixelRatio(game.world.centerX), scaleToPixelRatio(start+200), '');
-        applyCommonStyle(captured, 24, true);
+        applyCommonStyle(captured, 30, true);
         captured.wordWrap = true;
         captured.wordWrapWidth = 900;
 
         timeBonus = game.add.text(scaleToPixelRatio(game.world.centerX), scaleToPixelRatio(start+300), 'Time Bonus: ');
         applyCommonStyle(timeBonus, 24, true);
-        avoidBonus = game.add.text(scaleToPixelRatio(game.world.centerX), scaleToPixelRatio(start+400), 'Avoid Bonus: ');
+        avoidBonus = game.add.text(scaleToPixelRatio(game.world.centerX), scaleToPixelRatio(start+350), 'Avoid Bonus: ');
         applyCommonStyle(avoidBonus, 24, true);
 
         spacebarPress = game.add.text(game.world.centerX, game.world.height - 180,
@@ -157,7 +157,6 @@ var gameState = function(main){
     that.wordCollected = function(word){
         if(wordsCollectedThisRound !== that.MAX_WORDS) {
             wordsCollectedThisRound++;
-            //wordsCollection.push(word);
             curWordsCollection.push(word);
             that.incrementScore();
         }
@@ -230,7 +229,7 @@ var gameState = function(main){
      */
     function updateScoreText(newScore, numberOfWords){
         var plural = numberOfWords === 1 ? '' : 'S';
-        scoreText.text = 'SCORE:' +newScore+ ' | SUCCESSFULLY TARGETED '+numberOfWords +' WORD'+ plural;
+        scoreText.text = 'SCORE: ' +newScore+ ' | SUCCESSFULLY TARGETED '+numberOfWords +' WORD'+ plural;
     }
 
 
@@ -267,6 +266,7 @@ var gameState = function(main){
         curTimeScore = Math.round(timer.events[0].timer.duration / 10);
         curAvoidScore = rocketHits<16 ? (62 *(15-rocketHits)) : 0;
         score = score + curAvoidScore + curTimeScore;
+        updateScoreText(score, wordsCollected);
     }
 
     /**
