@@ -36,7 +36,7 @@ var FinalScore = function() {
         game.add.existing(that.summaryText);
         that.spacebarKey.onDown.add(goBack, this);
 
-        var backToMenu = game.add.text(game.world.centerX, game.world.height - 20,
+        var backToMenu = game.add.text(game.world.centerX, game.world.height - 30,
             'Hit Spacebar to Continue',
             {
                 font: utils.FONT1,

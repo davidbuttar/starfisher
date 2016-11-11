@@ -188,7 +188,11 @@ var Main = function (game) {
         }
 
         if (game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)) {
-            fireBullet();
+            if(gameStateInstance.currentState() === 'showSummary'){
+                gameStateInstance.endSummary();
+            }else{
+                fireBullet();
+            }
         }
 
         wordBubblesInstance.update();

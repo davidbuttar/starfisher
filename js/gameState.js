@@ -4,7 +4,7 @@ var gameState = function(main){
     var score = 0;
     var curAvoidScore = 0;
     var curTimeScore = 0;
-    var scoreText, levelText, timerText, outOfTime, personasCaptured, captured, timeBonus, avoidBonus;
+    var scoreText, levelText, timerText, outOfTime, personasCaptured, captured, timeBonus, avoidBonus, spacebarPress;
     var wordsCollected = 0;
     var round = 0;
     var wordsCollectedThisRound = 0;
@@ -16,6 +16,7 @@ var gameState = function(main){
     var timesUp = false;
     var currentState = 'startMessage';
     var levelDuration = 60;
+    var timeLeft = levelDuration;
 
 
     that.MAX_LEVELS = 3;
@@ -68,6 +69,21 @@ var gameState = function(main){
         applyCommonStyle(timeBonus, 24, true);
         avoidBonus = game.add.text(scaleToPixelRatio(game.world.centerX), scaleToPixelRatio(start+400), 'Avoid Bonus: ');
         applyCommonStyle(avoidBonus, 24, true);
+
+        spacebarPress = game.add.text(game.world.centerX, game.world.height - 180,
+            'Hit Spacebar to Continue',
+            {
+                font: utils.FONT1,
+                srokeThickness: 4,
+                align: 'left',
+                fill: 'red'
+            });
+
+        spacebarPress.anchor.setTo(0.5);
+        spacebarPress.fontSize = 34;
+        spacebarPress.alpha = 0;
+        spacebarPress.inputEnabled = true;
+
     }
 
     /**
@@ -87,24 +103,33 @@ var gameState = function(main){
                 game.add.tween(personasCaptured).to({alpha: 1}, 800, Phaser.Easing.Back.In, true, 200);
                 game.add.tween(avoidBonus).to({alpha: 1}, 800, Phaser.Easing.Back.In, true, 200);
                 game.add.tween(timeBonus).to({alpha: 1}, 800, Phaser.Easing.Back.In, true, 200);
-                var showCapturedTween = game.add.tween(captured).to({alpha: 1}, 800, Phaser.Easing.Back.In, true, 200);
-
-                showCapturedTween.onComplete.add(function(){
-                    game.time.events.add(2000, function(){
-                        game.add.tween(personasCaptured).to({alpha: 0}, 800, Phaser.Easing.Back.Out, true);
-                        game.add.tween(avoidBonus).to({alpha: 0}, 800, Phaser.Easing.Back.Out, true);
-                        game.add.tween(timeBonus).to({alpha: 0}, 800, Phaser.Easing.Back.Out, true);
-                        game.add.tween(captured).to({alpha: 0}, 800, Phaser.Easing.Back.Out, true);
-                        if(round === that.MAX_LEVELS){
-                            mainGame.gameOver();
-                        }else{
-                            that.showStartMessages();
-                        }
-                    });
+                game.add.tween(captured).to({alpha: 1}, 800, Phaser.Easing.Back.In, true, 200);
+                game.add.tween(spacebarPress).to( { alpha: 1 }, 1000, Phaser.Easing.Back.In, true, 200).onComplete.
+                add(function(){
+                    currentState = 'showSummary';
                 });
-
             });
         }, this);
+    };
+
+
+    /**
+     * Move on from the end of level summary.
+     */
+    that.endSummary = function(){
+        currentState = 'showStartMessages';
+        game.time.events.add(200, function(){
+            game.add.tween(personasCaptured).to({alpha: 0}, 800, Phaser.Easing.Back.Out, true);
+            game.add.tween(avoidBonus).to({alpha: 0}, 800, Phaser.Easing.Back.Out, true);
+            game.add.tween(timeBonus).to({alpha: 0}, 800, Phaser.Easing.Back.Out, true);
+            game.add.tween(captured).to({alpha: 0}, 800, Phaser.Easing.Back.Out, true);
+            game.add.tween(spacebarPress).to({alpha: 0}, 800, Phaser.Easing.Back.Out, true);
+            if(round === that.MAX_LEVELS){
+                mainGame.gameOver();
+            }else{
+                that.showStartMessages();
+            }
+        });
     };
 
     /**
@@ -239,11 +264,9 @@ var gameState = function(main){
      * At end of level apply bonus scoring for not being hit by asteroid
      */
     function applyScoreBonus(){
-        if(rocketHits<16){
-            curTimeScore = Math.round(timer.events[0].timer.duration / 10);
-            curAvoidScore = (62 *(15-rocketHits));
-            score = score + curAvoidScore + curTimeScore;
-        }
+        curTimeScore = Math.round(timer.events[0].timer.duration / 10);
+        curAvoidScore = rocketHits<16 ? (62 *(15-rocketHits)) : 0;
+        score = score + curAvoidScore + curTimeScore;
     }
 
     /**
@@ -264,12 +287,17 @@ var gameState = function(main){
         return (round === that.MAX_LEVELS);
     };
 
+    that.currentState = function(){
+        return currentState;
+    };
+
     /**
      * Update our timer.
      */
     that.updateTime = function(){
         if(timer && timer.events[0]) {
-            timerText.text = Math.round(timer.events[0].timer.duration / 1000);
+            timeLeft = Math.round(timer.events[0].timer.duration / 1000);
+            timerText.text = timeLeft;
         }
     };
 

@@ -69,9 +69,9 @@ Splash = function (game) {
     };
 
     that.addGameMusic = function () {
-        music = game.add.audio('dangerous');
+        /*music = game.add.audio('dangerous');
         music.loop = true;
-        music.play();
+        music.play();*/
     };
 
     that.create = function () {
