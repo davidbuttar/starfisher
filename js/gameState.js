@@ -15,7 +15,7 @@ var gameState = function(main){
     var timer;
     var timesUp = false;
     var currentState = 'startMessage';
-    var levelDuration = 20;
+    var levelDuration = 60;
     var timeLeft = levelDuration;
 
 
