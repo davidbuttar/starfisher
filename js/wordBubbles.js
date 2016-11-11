@@ -187,8 +187,7 @@ var wordBubbles = function(gameStateInst){
      * End of level remove remaining asteroids
      */
     that.roundOver = function(){
-        bubbles.forEach(function(bubble, index){
-            console.log(index);
+        bubbles.forEach(function(bubble){
             that.animateOut(bubble.bubble);
         });
         if(reviveTimer.length){
