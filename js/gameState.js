@@ -40,14 +40,16 @@ var gameState = function(main){
      * Create all our words for the first time.
      */
     that.create = function(){
-        scoreText = game.add.text(scaleToPixelRatio(game.world.centerX), scaleToPixelRatio(game.world.height-20), 'SCORE:'+score);
+        scoreText = game.add.text(scaleToPixelRatio(10), scaleToPixelRatio(game.world.height-34), 'SCORE:'+score);
         applyCommonStyle(scoreText, 20);
+        scoreText.anchor.setTo(0);
+        scoreText.align = 'left';
 
         levelText = game.add.text(scaleToPixelRatio(game.world.centerX), scaleToPixelRatio(400), 'Avoid the bombardment, shoot the stars to get the perfect content.'+round);
         applyCommonStyle(levelText, 30, true);
 
-        timerText = game.add.text(scaleToPixelRatio(game.world.width-20), scaleToPixelRatio(20), '59');
-        applyCommonStyle(timerText, 30);
+        timerText = game.add.text(scaleToPixelRatio(game.world.width-58), scaleToPixelRatio(game.world.height-20), 'Timer:60');
+        applyCommonStyle(timerText, 20);
 
         addLevelSummary();
     };
@@ -225,11 +227,9 @@ var gameState = function(main){
     /**
      * Update our score
      * @param newScore
-     * @param numberOfWords
      */
-    function updateScoreText(newScore, numberOfWords){
-        var plural = numberOfWords === 1 ? '' : 'S';
-        scoreText.text = 'SCORE: ' +newScore+ ' | SUCCESSFULLY TARGETED '+numberOfWords +' WORD'+ plural;
+    function updateScoreText(newScore){
+        scoreText.text = 'SCORE: ' +newScore;
     }
 
 
@@ -254,7 +254,7 @@ var gameState = function(main){
      * Update our score
      */
     that.incrementScore = function(){
-        score += 100;
+        score += 200;
         wordsCollected++;
         updateScoreText(score, wordsCollected);
     };
@@ -264,9 +264,11 @@ var gameState = function(main){
      */
     function applyScoreBonus(){
         curTimeScore = Math.round(timer.events[0].timer.duration / 10);
-        curAvoidScore = rocketHits<16 ? (62 *(15-rocketHits)) : 0;
+        // round out the time score nicely
+        curTimeScore = Math.round(curTimeScore/100)*100;
+        curAvoidScore = rocketHits<16 ? (50 *(15-rocketHits)) : 0;
         score = score + curAvoidScore + curTimeScore;
-        updateScoreText(score, wordsCollected);
+        updateScoreText(score);
     }
 
     /**
@@ -297,7 +299,7 @@ var gameState = function(main){
     that.updateTime = function(){
         if(timer && timer.events[0]) {
             timeLeft = Math.round(timer.events[0].timer.duration / 1000);
-            timerText.text = timeLeft;
+            timerText.text = 'Timer:'+timeLeft;
         }
     };
 

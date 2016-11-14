@@ -64,6 +64,7 @@ var Main = function (game) {
 
         //  Create our ship sprite
         rocket = game.add.sprite(scaleToPixelRatio(800), scaleToPixelRatio(600), 'rocket');
+        //rocket = game.add.sprite(scaleToPixelRatio(200), scaleToPixelRatio(60), 'rocket');
         rocket.scale.set(scaleToPixelRatio(0.5));
         game.physics.p2.enable(rocket);
         rocket.body.mass = 0.5;
@@ -94,6 +95,7 @@ var Main = function (game) {
         //  Game input
         cursors = game.input.keyboard.createCursorKeys();
         game.input.keyboard.addKeyCapture([Phaser.Keyboard.SPACEBAR]);
+        game.input.keyboard.addKeyCapture([Phaser.Keyboard.ESC]);
 
         gameStateInstance.showStartMessages();
     };
@@ -154,20 +156,17 @@ var Main = function (game) {
     function hitRocket(body1, body2){
         if(body2.sprite.key === 'asteroid'){
             gameStateInstance.registerRocketHit();
+            var distance = game.math.distance(body1.x, body1.y, body2.x, body2.y);
+            if(distance < 75){
+                tooCloseCount++;
+            }else{
+                tooCloseCount = 0;
+            }
+            if(tooCloseCount === 5){
+                body1.x = body1.x+110;
+                body1.y = body1.y+110;
+            }
         }
-
-        var distance = game.math.distance(body1.sprite.x, body1.sprite.y, body2.sprite.x, body2.sprite.y);
-
-        if(distance < 75){
-            tooCloseCount++;
-        }else{
-            tooCloseCount = 0;
-        }
-        if(tooCloseCount === 40){
-            body1.x = body1.x+200;
-            body1.y = body1.y+200;
-        }
-
     }
 
     that.update = function () {
@@ -195,6 +194,10 @@ var Main = function (game) {
             }
         }
 
+        if (game.input.keyboard.isDown(Phaser.Keyboard.ESC)) {
+            that.restart();
+        }
+
         wordBubblesInstance.update();
         asteroidsInstance.update(rocket);
         utils.constrainVelocity(rocket,55);
@@ -220,6 +223,11 @@ var Main = function (game) {
 
     that.render = function(){
         game.debug.text(game.time.fps, 2, 24, "#00ff00");
+    };
+
+    that.restart = function () {
+        gameStateInstance.reset();
+        game.state.start('Menu');
     };
 
     return that;
