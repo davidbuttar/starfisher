@@ -13,12 +13,11 @@ Boot = function (game) {};
 Boot.prototype = {
 
     preload: function () {
+        game.load.atlas('atlas', 'assets/atlas_json.png', 'assets/atlas.json');
         game.load.image('loading', 'assets/loading.png');
         game.load.image('brand', 'assets/logo.png');
         game.load.script('utils', 'js/utils.js');
         game.load.script('splash', 'js/splash.js');
-        game.load.image('space', 'assets/space-bg.png');
-        game.load.image('space2', 'assets/space-bg-2.png');
         game.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
         game.load.script('wordBubbles', 'js/wordBubbles.js');
         game.load.script('generateWords', 'js/generateWords.js');

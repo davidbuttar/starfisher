@@ -39,7 +39,7 @@ Menu.prototype = {
 
   create: function(){
     var that = this;
-		game.add.tileSprite(0, 0, game.width, game.height, 'space');
+		game.add.tileSprite(0, 0, game.width, game.height, 'atlas', 'space0000');
 
     game.stage.disableVisibilityChange = true;
     game.add.existing(this.titleText);

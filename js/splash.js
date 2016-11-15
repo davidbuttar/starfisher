@@ -2,7 +2,7 @@ Splash = function (game) {
     var that = {};
     
     that.init =  function () {
-        game.add.tileSprite(0, 0, game.width, game.height, 'space');
+        game.add.tileSprite(0, 0, game.width, game.height, 'atlas', 'space0000');
         that.loadingBar = game.make.sprite(game.world.centerX - (387 / 2), 400, "loading");
         that.logo = game.make.sprite(game.world.centerX, 200, 'brand');
         that.status = game.make.text(game.world.centerX, 380, 'Loading...', {fill: 'white'});
@@ -23,10 +23,6 @@ Splash = function (game) {
     
     that.loadImages = function () {
 
-        game.load.image('bullet', 'assets/blast2.png');
-        game.load.image('rocket', 'assets/Rocket3.png');
-        game.load.image('bubble', 'assets/Star2.png');
-        game.load.image('asteroid', 'assets/asteroid.png');
     };
 
     that.loadFonts = function () {

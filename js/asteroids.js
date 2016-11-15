@@ -51,7 +51,7 @@ var asteroids = function(curGameState){
         //utils.resizePolygon('physicsData', 'physicsData3', 'asteroid', scaleToPixelRatio(1));
 
         //  Create our ship sprite
-        var asteroid = game.add.sprite(-200, -200, 'asteroid');
+        var asteroid = game.add.sprite(-200, -200, 'atlas', 'rock0000');
         asteroid.scale.set(scaleToPixelRatio(scale));
 
         game.physics.p2.enable(asteroid);

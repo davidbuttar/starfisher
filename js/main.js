@@ -43,7 +43,7 @@ var Main = function (game) {
 
     that.create = function () {
 
-        starField = game.add.tileSprite(0, 0, game.width, game.height, 'space');
+        starField = game.add.tileSprite(0, 0, game.width, game.height, 'atlas', 'space0000');
 
         // Setting the frame rate should improve performance but due to bug: https://github.com/photonstorm/phaser/issues/2801
         // it is causing flickering images.
@@ -52,6 +52,7 @@ var Main = function (game) {
 
         //  Enable P2
         game.physics.startSystem(Phaser.Physics.P2JS);
+        game.camera.roundPx = false;
 
         //  Turn on impact events for the world, without this we get no collision callbacks
         game.physics.p2.setImpactEvents(true);
@@ -65,7 +66,7 @@ var Main = function (game) {
         var asteroidCollisionGroup = game.physics.p2.createCollisionGroup();
 
         //  Create our ship sprite
-        rocket = game.add.sprite(scaleToPixelRatio(800), scaleToPixelRatio(600), 'rocket');
+        rocket = game.add.sprite(scaleToPixelRatio(800), scaleToPixelRatio(600), 'atlas', 'rocket0000');
         //rocket = game.add.sprite(scaleToPixelRatio(200), scaleToPixelRatio(60), 'rocket');
         rocket.scale.set(scaleToPixelRatio(0.5));
         game.physics.p2.enable(rocket);
@@ -81,7 +82,7 @@ var Main = function (game) {
         // Add our game bullets
         bullets = game.add.group();
         for (var i = 0; i < 10; i++) {
-            var bullet = bullets.create(0, 0, 'bullet');
+            var bullet = bullets.create(0, 0, 'atlas', 'bullet0000');
             bullet.scale.set(scaleToPixelRatio(0.5));
             game.physics.p2.enable(bullet);
             bullet.body.mass = 0.1;
@@ -154,7 +155,7 @@ var Main = function (game) {
 
     function hitWord(body1, body2){
         body1.sprite.lifespan = 1;
-        if(body2.sprite.key === 'bubble') {
+        if(body2.sprite.frameName === 'star0000') {
             body2.hits++;
             if (body2.hits === requiredHits) {
                 gameStateInstance.wordCollected(body2.sprite.wordRef.text);
@@ -172,7 +173,7 @@ var Main = function (game) {
      * @param body2
      */
     function hitRocket(body1, body2){
-        if(body2.sprite.key === 'asteroid'){
+        if(body2.sprite.frameName === 'rock0000'){
             gameStateInstance.registerRocketHit();
             var distance = game.math.distance(body1.x, body1.y, body2.x, body2.y);
             if(distance < 75){
@@ -201,6 +202,7 @@ var Main = function (game) {
         if (cursors.up.isDown) {
             rocket.body.thrust(scaleToPixelRatio(1900));
             if(thrusters.volume !== 1) {
+                rocket.frameName = 'rocket0001';
                 thrusters.volume = 1;
             }
         } else if (cursors.down.isDown) {
@@ -208,6 +210,7 @@ var Main = function (game) {
         }
 
         if(cursors.up.isUp){
+            rocket.frameName = 'rocket0000';
             thrusters.volume = 0.05;
         }
 

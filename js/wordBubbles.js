@@ -65,7 +65,7 @@ var wordBubbles = function(gameStateInst){
         var wordBubble = {};
 
         //  Create our ship sprite
-        var bubble = game.add.sprite(-100, -100, 'bubble');
+        var bubble = game.add.sprite(-100, -100, 'atlas', 'star0000');
         bubble.scale.set(scales['bucket'+word.bucket]);
 
         game.physics.p2.enable(bubble);
@@ -169,7 +169,10 @@ var wordBubbles = function(gameStateInst){
         bubble.scale.x = 0.1;
         bubble.scale.y = 0.1;
         bubble.alpha = 1;
-        game.add.tween(bubble.scale).to({ x:initalScale, y:initalScale}, 800, Phaser.Easing.Back.Out, true, 0);
+        var inTween = game.add.tween(bubble.scale).to({ x:initalScale, y:initalScale}, 800, Phaser.Easing.Back.Out, true, 0);
+        //inTween.onComplete.add(function(){
+            //bubble.revive();
+        //});
     };
 
 

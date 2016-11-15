@@ -31,7 +31,7 @@ var FinalScore = function() {
     };
 
     that.create = function(){
-        game.add.tileSprite(0, 0, game.width, game.height, 'space');
+        game.add.tileSprite(0, 0, game.width, game.height, 'atlas', 'space0000');
         game.add.existing(that.titleText);
         game.add.existing(that.summaryText);
         that.spacebarKey.onDown.add(goBack, this);

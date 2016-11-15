@@ -1,0 +1,59 @@
+{"frames": [
+    {
+      "filename": "rocket0000",
+      "frame": {"x":0,"y":0,"w":64,"h":140},
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {"x":0,"y":0,"w":64,"h":140},
+      "sourceSize": {"w":66,"h":140}
+    },
+    {
+      "filename": "rocket0001",
+      "frame": {"x":0,"y":148,"w":64,"h":165},
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {"x":0,"y":0,"w":66,"h":66},
+      "sourceSize": {"w":66,"h":140}
+    },
+    {
+      "filename": "star0000",
+      "frame": {"x":97,"y":0,"w":156,"h":149},
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {"x":0,"y":0,"w":156,"h":149},
+      "sourceSize": {"w":156,"h":149}
+    },
+    {
+      "filename": "rock0000",
+      "frame": {"x":97,"y":173,"w":160,"h":140},
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {"x":0,"y":0,"w":160,"h":140},
+      "sourceSize": {"w":156,"h":149}
+    },
+    {
+      "filename": "space0000",
+      "frame": {"x":0,"y":332,"w":520,"h":318},
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {"x":0,"y":0,"w":520,"h":318},
+      "sourceSize": {"w":520,"h":318}
+    },
+    {
+      "filename": "bullet0000",
+      "frame": {"x":273,"y":0,"w":48,"h":54},
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {"x":0,"y":0,"w":48,"h":54},
+      "sourceSize": {"w":48,"h":54}
+    }
+  ],
+  "meta": {
+    "app": "Adobe Flash CS6",
+    "version": "12.0.0.481",
+    "image": "atlas_json.png",
+    "format": "RGBA8888",
+    "size": {"w":259,"h":317},
+    "scale": "1"
+  }
+}

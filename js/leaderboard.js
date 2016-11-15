@@ -28,7 +28,7 @@ Leaderboard.prototype = {
 	create: function(){
     var leadersCount = 0;
     
-		game.add.tileSprite(0, 0, game.width, game.height, 'space');
+		game.add.tileSprite(0, 0, game.width, game.height, 'atlas', 'space0000');
     game.add.existing(this.titleText);
 
     this.leaderboard.sort(function(a, b) {
