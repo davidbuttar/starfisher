@@ -11,11 +11,13 @@ var Main = function (game) {
     var starField;
     var tooCloseCount = 0;
     var requiredHits = 4;
+    var blaster, thrusters, bonus;
 
     that.userInput;
 
     function fireBullet() {
         if (game.time.now > bulletTime) {
+            blaster.play();
             bullet = bullets.getFirstExists(false);
             var rocketRadius = rocket.height / 2 + scaleToPixelRatio(15);
             if (bullet) {
@@ -98,6 +100,21 @@ var Main = function (game) {
         game.input.keyboard.addKeyCapture([Phaser.Keyboard.ESC]);
 
         gameStateInstance.showStartMessages();
+
+        //explosion = game.add.audio('explosion');
+        //sword = game.add.audio('sword');
+        blaster = game.add.audio('blaster');
+        blaster.allowMultiple = true;
+        thrusters = game.add.audio('thrusters');
+        bonus = game.add.audio('bonus');
+
+        thrusters.play('', 0, 0.05, true);
+
+        //  Being mp3 files these take time to decode, so we can't play them instantly
+        //  Using setDecodedCallback we can be notified when they're ALL ready for use.
+        //  The audio files could decode in ANY order, we can never be sure which it'll be.
+
+        //game.sound.setDecodedCallback([ blaster ], start, this);
     };
 
     /**
@@ -141,6 +158,7 @@ var Main = function (game) {
             body2.hits++;
             if (body2.hits === requiredHits) {
                 gameStateInstance.wordCollected(body2.sprite.wordRef.text);
+                bonus.play();
                 wordBubblesInstance.removeBubble(body2, function(){
                     gameStateInstance.checkLevelOver();
                 });
@@ -162,7 +180,7 @@ var Main = function (game) {
             }else{
                 tooCloseCount = 0;
             }
-            if(tooCloseCount === 5){
+            if(tooCloseCount === 7){
                 body1.x = body1.x+110;
                 body1.y = body1.y+110;
             }
@@ -182,8 +200,15 @@ var Main = function (game) {
 
         if (cursors.up.isDown) {
             rocket.body.thrust(scaleToPixelRatio(1900));
+            if(thrusters.volume !== 1) {
+                thrusters.volume = 1;
+            }
         } else if (cursors.down.isDown) {
             rocket.body.reverse(scaleToPixelRatio(40));
+        }
+
+        if(cursors.up.isUp){
+            thrusters.volume = 0.05;
         }
 
         if (game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)) {
@@ -228,6 +253,12 @@ var Main = function (game) {
     that.restart = function () {
         gameStateInstance.reset();
         game.state.start('Menu');
+    };
+
+    that.shutdown = function(){
+        thrusters.destroy();
+        bonus.destroy();
+        blaster.destroy();
     };
 
     return that;
