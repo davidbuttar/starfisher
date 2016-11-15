@@ -67,7 +67,7 @@ var Main = function (game) {
 
         //  Create our ship sprite
         rocket = game.add.sprite(scaleToPixelRatio(800), scaleToPixelRatio(600), 'atlas', 'rocket0000');
-        //rocket = game.add.sprite(scaleToPixelRatio(200), scaleToPixelRatio(60), 'rocket');
+        //rocket = game.add.sprite(scaleToPixelRatio(200), scaleToPixelRatio(60), 'atlas', 'rocket0000');
         rocket.scale.set(scaleToPixelRatio(0.5));
         game.physics.p2.enable(rocket);
         rocket.body.mass = 0.5;
@@ -181,7 +181,7 @@ var Main = function (game) {
             }else{
                 tooCloseCount = 0;
             }
-            if(tooCloseCount === 7){
+            if(tooCloseCount === 6){
                 body1.x = body1.x+110;
                 body1.y = body1.y+110;
             }
@@ -250,7 +250,7 @@ var Main = function (game) {
     };
 
     that.render = function(){
-        game.debug.text(game.time.fps, 2, 24, "#00ff00");
+        //game.debug.text(game.time.fps, 2, 24, "#00ff00");
     };
 
     that.restart = function () {

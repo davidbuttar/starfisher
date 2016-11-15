@@ -298,8 +298,12 @@ var gameState = function(main){
      */
     that.updateTime = function(){
         if(timer && timer.events[0]) {
-            timeLeft = Math.round(timer.events[0].timer.duration / 1000);
-            timerText.text = 'Timer:'+timeLeft;
+            var nextTime = Math.round(timer.events[0].timer.duration / 1000);
+            if(nextTime !== timeLeft){
+                timerText.text = 'Timer:'+nextTime;
+                timeLeft = nextTime;
+            }
+
         }
     };
 
