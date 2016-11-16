@@ -95,7 +95,6 @@ var utils = (function(){
         });
         var item = {};
         item[shapeKey] = newData;
-        console.log(JSON.stringify(newData));
         game.load.physics(newPhysicsKey, '', item);
     }
 

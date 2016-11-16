@@ -24,6 +24,7 @@ GameIntro.prototype = {
         game.add.plugin(Fabrique.Plugins.InputField);
 
         document.getElementById( 'user-data' ).style.display = 'block';
+        document.getElementById("email").value = '';
     },
 
     addInputs: function () {
