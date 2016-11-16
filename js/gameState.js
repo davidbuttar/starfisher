@@ -97,6 +97,7 @@ var gameState = function(main){
         captured.text = curWordsCollection.join(', ');
         avoidBonus.text = 'Dodge Bonus: '+curAvoidScore;
         timeBonus.text = 'Time Bonus: '+curTimeScore;
+        personasCaptured.text = mainGame.userInput.subject+ ' persona words';
         var inTween = game.add.tween(outOfTime).to({ alpha: 1}, 800, Phaser.Easing.Back.In, true);
 
         inTween.onComplete.add(function(){

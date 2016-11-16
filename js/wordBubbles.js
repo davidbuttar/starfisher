@@ -6,6 +6,7 @@ var wordBubbles = function(gameStateInst){
     var words;
     var lastIndex = 0;
     var reviveTimer = [];
+    var userInput;
 
     var startingPositions = [
         {
@@ -43,17 +44,17 @@ var wordBubbles = function(gameStateInst){
     /**
      * Create all our words for the first time.
      */
-    that.create = function(collisionGroups){
+    that.create = function(collisionGroups, inUserInput){
         utils.resizePolygon('physicsData', 'physicsData1', 'Star', scales.bucket1);
         utils.resizePolygon('physicsData', 'physicsData2', 'Star', scales.bucket2);
         utils.resizePolygon('physicsData', 'physicsData3', 'Star', scales.bucket3);
         wordAdded = 0;
         bubbles = [];
-        var words = generateWordsInstance.get(1);
+        userInput = inUserInput;
+        var words = generateWordsInstance.get(1, userInput.subject);
         for(var i = 0; i<8; i++) {
             that.add(words[i], collisionGroups);
         }
-
     };
 
     /**
@@ -105,7 +106,7 @@ var wordBubbles = function(gameStateInst){
     that.newCycle = function(){
         wordAdded = 0;
         reviveTimer = [];
-        words = generateWordsInstance.get(gameStateInst.getLevel());
+        words = generateWordsInstance.get(gameStateInst.getLevel(), userInput.subject);
         for(var i = 0; i<gameStateInst.WORDS_LIMIT; i++){
             reviveWord(bubbles[i].bubble, i);
         }

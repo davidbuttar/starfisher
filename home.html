@@ -36,8 +36,40 @@
 		canvas{
 			margin:0 auto;
 		}
+		.form{
+			width:100%;
+			text-align: center;
+			display:none;
+		}
+		input, select{
+			position: fixed;
+			width:380px;
+			height:7%;
+			font-size:20px;
+			display:block;
+			border:none;
+			border-radius: 2px;
+			left:50%;
+			margin-left:-190px;
+		}
+		input{
+			top:34%;
+			padding-left:7px;
+			width:373px;
+		}
+		select{
+			top:55%;
+		}
     </style>
 </head>
 <body>
+<div class="form" id="user-data">
+	<input type="email" id="email" />
+	<select id="topic">
+		<option value="rolex">Rolex</option>
+		<option value="tesco">Tesco</option>
+		<option value="nike">Nike</option>
+	</select>
+</div>
 </body>
 </html>

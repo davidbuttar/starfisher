@@ -22,6 +22,8 @@ GameIntro.prototype = {
         this.spacebarKey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 
         game.add.plugin(Fabrique.Plugins.InputField);
+
+        document.getElementById( 'user-data' ).style.display = 'block';
     },
 
     addInputs: function () {
@@ -31,34 +33,10 @@ GameIntro.prototype = {
             align: 'center'
         });
 
-        this.emailInput = game.make.inputField(game.world.centerX - 300, 300, {
-            font: '30px Arial',
-            fill: '#212121',
-            fontWeight: 'bold',
-            width: 600,
-            height: 40,
-            padding: 20,
-            borderWidth: 1,
-            borderColor: '#000',
-            borderRadius: 6
-        });
-
         this.contentText = game.make.text(game.world.centerX, 450, "Your Topic", {
             font: 'bold 30pt ' + utils.FONT1,
             fill: '#fff',
             align: 'center'
-        });
-
-        this.contentInput = game.make.inputField(game.world.centerX - 300, 490, {
-            font: '30px Arial',
-            fill: '#212121',
-            fontWeight: 'bold',
-            height: 40,
-            width: 600,
-            padding: 20,
-            borderWidth: 1,
-            borderColor: '#000',
-            borderRadius: 6
         });
 
         this.playActionText = game.make.text(game.world.centerX, 800, "Start", {
@@ -83,9 +61,7 @@ GameIntro.prototype = {
         this.playActionText.anchor.set(0.5);
 
         game.add.existing(this.emailText);
-        game.add.existing(this.emailInput);
         game.add.existing(this.contentText);
-        game.add.existing(this.contentInput);
         game.add.existing(this.playActionText);
         game.add.existing(this.backToMenuText);
 
@@ -116,18 +92,19 @@ GameIntro.prototype = {
     },
 
     startGame: function () {
-        if (this.emailInput.value && this.contentInput.value) {
+        if (document.getElementById("email").value && document.getElementById("topic").value) {
             var player = {
-                email: this.emailInput.value,
-                subject: this.contentInput.value
+                email: document.getElementById("email").value,
+                subject: document.getElementById("topic").value
             };
 
             game.state.start('Main', true, false, player);
+            document.getElementById( 'user-data' ).style.display = 'none';
         }
     },
 
     showPlayAction: function () {
-        this.playActionText.visible = this.emailInput.value && this.contentInput.value;
+        this.playActionText.visible = document.getElementById("email").value && document.getElementById("topic").value;
     },
 
     update: function () {

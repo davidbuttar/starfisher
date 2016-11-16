@@ -76,7 +76,7 @@ var Main = function (game) {
 
         gameStateInstance.create();
 
-        wordBubblesInstance.create([wordCollisionGroup, asteroidCollisionGroup, bulletCollisionGroup, shipCollisionGroup]);
+        wordBubblesInstance.create([wordCollisionGroup, asteroidCollisionGroup, bulletCollisionGroup, shipCollisionGroup], that.userInput);
         asteroidsInstance.create([asteroidCollisionGroup, wordCollisionGroup, bulletCollisionGroup, shipCollisionGroup]);
 
         // Add our game bullets
