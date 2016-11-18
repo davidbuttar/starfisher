@@ -37,6 +37,8 @@ Boot.prototype = {
 
         if (localStorage.getItem('leaderboard') === null) {
             localStorage.setItem('leaderboard', JSON.stringify(leaderboard));
+        }else{
+            document.getElementById("emails").value = localStorage.getItem('leaderboard');
         }
     },
 
