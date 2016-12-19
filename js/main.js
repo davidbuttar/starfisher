@@ -11,7 +11,7 @@ var Main = function (game) {
     var starField;
     var tooCloseCount = 0;
     var requiredHits = 4;
-    var blaster, thrusters, bonus;
+    var blaster, thrusters, bonus, bang;
 
     that.userInput;
 
@@ -106,6 +106,9 @@ var Main = function (game) {
         //sword = game.add.audio('sword');
         blaster = game.add.audio('blaster');
         blaster.allowMultiple = true;
+        bang = game.add.audio('bang');
+        bang.allowMultiple = true;
+        bang.volume = 0.4;
         thrusters = game.add.audio('thrusters');
         bonus = game.add.audio('bonus');
 
@@ -175,6 +178,7 @@ var Main = function (game) {
     function hitRocket(body1, body2){
         if(body2.sprite.frameName === 'rock0000'){
             gameStateInstance.registerRocketHit();
+            bang.play();
             var distance = game.math.distance(body1.x, body1.y, body2.x, body2.y);
             if(distance < 75){
                 tooCloseCount++;

@@ -18,6 +18,7 @@ Splash = function (game) {
         game.load.audio('dangerous', 'assets/bgm/Dangerous.mp3');
         game.load.audio('blaster', 'assets/bgm/blaster.mp3');
         game.load.audio('thrusters', 'assets/bgm/ship_thrusters.ogg');
+        game.load.audio('bang', 'assets/bgm/metal_crash_2.ogg');
         game.load.audio('bonus', 'assets/bgm/bonus.ogg');
     };
     
