@@ -108,7 +108,7 @@ var Main = function (game) {
         blaster.allowMultiple = true;
         bang = game.add.audio('bang');
         bang.allowMultiple = true;
-        bang.volume = 0.4;
+        bang.volume = 0.15;
         thrusters = game.add.audio('thrusters');
         bonus = game.add.audio('bonus');
 
